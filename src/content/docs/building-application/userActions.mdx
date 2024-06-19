@@ -1,0 +1,183 @@
+---
+title: "User Actions"
+description: "
+This file contains functions related to user management in a server-side application. It provides functionality to create new users, change passwords, retrieve user details, update user status, delete users, create admin accounts, and initiate password reset processes. The functions interact with a database, handle password hashing, and send emails for password reset."
+---
+
+In the <Highlight>src/lib/actions</Highlight> directory, You can find the <Highlight>user.actions.ts</Highlight>
+
+## Functions
+
+```tsx:createNewUser
+
+export const createNewUser = async (req: {
+  name: string;
+  email: string;
+  image: string;
+}): Promise<{ data: string; status: number }> => {
+  try {
+    await connectToDatabase();
+    const { name, email, image } = req;
+    if (!name || !email) {
+      return { data: "Missing Fields", status: 400 };
+    }
+
+    const isUserExist = await User.findOne({ email });
+    if (isUserExist) {
+      return { data: "User already exists. Try logging in instead", status: 403 };
+    }
+
+    //Function Code
+
+    return { data: "User created successfully", status: 200 };
+  } catch (error) {
+    throw new Error(typeof error === "string" ? error : JSON.stringify(error));
+  }
+};
+
+```
+This function is responsible for creating a new user in the system. It takes the user's name, email, and image as input parameters. It first checks if the required fields (name and email) are provided. Then, it checks if a user with the same email already exists. If not, it generates a salt and hashes the password using bcrypt, and finally saves the user to the database.
+
+```tsx:changePassword
+
+export const changePassword = async (req: {
+  id: string;
+  password: string;
+}): Promise<{ data: string; status: number }> => {
+  try {
+    await connectToDatabase();
+    const { id, password } = req;
+    const user = await User.findById(id);
+
+    //Function code
+
+    const hashedPassword = await bcryptjs.hash(password, salt);
+
+    const updatedUser = await User.findByIdAndUpdate(id, { password: hashedPassword });
+    return { data: "Password changed successfully.", status: 200 };
+  } catch (error) {
+    throw new Error(typeof error === "string" ? error : JSON.stringify(error));
+  }
+}; 
+
+```
+This function is used to change a user's password. It takes the user's ID and the new password as input parameters. It retrieves the user from the database using the ID, checks if the provided password is different from the current one, hashes the new password, and updates the user's password in the database.
+
+```tsx:getAllUsers
+
+export const getAllUsers = async ({
+  query,
+  status,
+  limit = 10,
+  page = 1,
+}: {
+  query: string;
+  status: string;
+  limit: number;
+  
+  //Function code
+
+    return {
+      data: JSON.parse(JSON.stringify(users)),
+      status: 200,
+      totalPages: Math.ceil(totalDocuments / limit),
+      totalDocuments: totalDocuments,
+    };
+  } catch (error) {
+    throw new Error(typeof error === "string" ? error : JSON.stringify(error));
+  }
+};
+
+```
+This function retrieves a list of users based on optional query and status parameters. It allows filtering users by name and email (using a regex pattern), and by their status (disabled or not). It returns paginated results along with the total number of documents.
+
+```tsx:updateUserStatus
+
+export const updateUserStatus = async (userId: string, disabled: boolean) => {
+  try {
+    await connectToDatabase();
+    const updatedUser = await User.findByIdAndUpdate(userId, { disabled: disabled });
+    return { data: "User status changed successfully.", status: 200 };
+  } catch (error) {
+    throw new Error(typeof error === "string" ? error : JSON.stringify(error));
+  }
+};
+
+```
+
+This function updates the status of a user (enabled or disabled) based on the provided user ID and status.
+
+```tsx:createAdmin
+
+export const createAdmin = async (req: any) => {
+  try {
+    await connectToDatabase();
+    const salt = await bcryptjs.genSalt(10);
+    const hashedPassword = await bcryptjs.hash(req.password, salt);
+    await User.create({ ...req, password: hashedPassword });
+    return { status: 200 };
+  } catch (error) {
+    throw new Error(typeof error === "string" ? error : JSON.stringify(error));
+  }
+};
+
+```
+This function is used to create a new admin user. It generates a salt and hashes the password, then creates a new user with the provided details and admin privileges.
+
+```tsx:deleteUser
+
+export const deleteUser = async (id: string) => {
+  try {
+    await connectToDatabase();
+    const response = await User.findByIdAndDelete(id);
+    return { data: `User '${response.name}' removed permanently from application.`, status: 200 };
+  } catch (error) {
+    throw new Error(typeof error === "string" ? error : JSON.stringify(error));
+  }
+};
+
+```
+This function deletes a user from the system permanently based on the provided user ID.
+
+```tsx:resetPassword
+
+export const resetPassword = async (email: string) => {
+  try {
+    await connectToDatabase();
+
+    const user = await User.findOne({ email: email });
+
+    //Function code
+
+    const response = await transporter.sendMail(mailOptions);
+
+    return { data: "Email sent successfully", status: 200 };
+  } catch (error) {
+    throw new Error(typeof error === "string" ? error : JSON.stringify(error));
+  }
+};
+
+```
+This function is responsible for initiating the password reset process. It generates a random token, sets an expiration time for the token, and updates the user's reset password token and expiry fields in the database. It also sends an email to the user with a link to reset their password.
+
+```tsx:getUserById
+
+export const getUserById = async (id: string): Promise<{ data: IUser | null; status: number }> => {
+  try {
+    await connectToDatabase();
+    if (!ObjectId.isValid(id)) {
+      return { data: null, status: 404 };
+    }
+    const user = await User.findById(id);
+
+    if (!user) return { data: null, status: 404 };
+
+    return { data: JSON.parse(JSON.stringify(user)), status: 200 };
+  } catch (error) {
+    throw new Error(typeof error === "string" ? error : JSON.stringify(error));
+  }
+};
+
+```
+
+This function retrieves a user from the database based on the provided user ID. It returns the user data if found, otherwise returns null.

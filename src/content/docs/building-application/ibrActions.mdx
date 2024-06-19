@@ -1,0 +1,120 @@
+---
+title: "IBR Actions"
+description: "This file contains functions for CRUD operations (Create, Read, Update, Delete) and Excel data upload for the IBR database collection, along with modification history tracking and caching mechanisms."
+---
+
+In the <Highlight>src/lib/actions</Highlight> directory, You can find the <Highlight>ibr.actions.ts</Highlight>
+
+## Functions
+
+```tsx:getAllIBRs
+
+export const getAllIBRs = async (
+  limit = 10,
+  page = 1,
+  query = "",
+  columns: IColumn[]
+): Promise<{
+  data: INonDefaultDatabases[];
+  status: number;
+  totalPages: number;
+  totalDocuments: number;
+  completeData: INonDefaultDatabases[];
+}> => {
+  try {
+    await connectToDatabase();
+    // Construct search conditions based on query and columns
+    // Perform search and pagination
+    // Return paginated IBR data along with metadata
+  } catch (error) {
+    throw new Error(typeof error === "string" ? error : JSON.stringify(error));
+  }
+};
+
+
+```
+This function retrieves a list of IBRs from the database. It accepts parameters for filtering, pagination, and search. It constructs search conditions based on the provided query and columns, performs the search, paginates the results, and returns the data along with metadata such as total documents and total pages.
+
+```tsx:createIBR
+
+export const createIBR = async (req: ICreateUpdateParams, userId: string) => {
+  const { defaultFields, additionalFields } = req;
+  try {
+    await connectToDatabase();
+    // Create a new IBR document based on the request
+    // Save the new IBR document
+    // Record this action in the modification history
+    // Return the created IBR data
+  } catch (error) {
+    throw new Error(typeof error === "string" ? error : JSON.stringify(error));
+  }
+};
+
+```
+This function creates a new IBR record in the database. It receives a request object containing default and additional fields for the new IBR, along with the user ID performing the action. It connects to the database, creates a new IBR document, saves it, records this action in the modification history, and finally returns the created IBR data.
+
+```tsx:getIBRById
+
+export const getIBRById = async (id: string) => {
+  try {
+    await connectToDatabase();
+    // Find the IBR document by its ID
+    // If found, return its details; otherwise, return "IBR not found"
+  } catch (error) {
+    throw new Error(typeof error === "string" ? error : JSON.stringify(error));
+  }
+};
+
+```
+This function retrieves details of an IBR by its ID. It connects to the database, finds the IBR document by its ID, and returns its details if found. If the IBR is not found, it returns an "IBR not found" message.
+
+```tsx:updateIBR
+
+export const updateIBR = async (req: ICreateUpdateParams, id: string, userId: string) => {
+  const { defaultFields, additionalFields } = req;
+  try {
+    await connectToDatabase();
+    // Find the IBR document by its ID and update its fields based on the request
+    // Record this update action in the modification history
+    // Return the updated IBR data
+  } catch (error) {
+    throw new Error(typeof error === "string" ? error : JSON.stringify(error));
+  }
+};
+
+```
+
+This function updates an existing IBR record in the database. It receives a request object containing fields to update, the ID of the IBR to update, and the user ID performing the action. It connects to the database, finds the IBR document by its ID, updates its fields, records this action in the modification history, and finally returns the updated IBR data.
+
+```tsx:deleteIBR
+
+export const deleteIBR = async (id: string, path: string, userId: string) => {
+  try {
+    await connectToDatabase();
+    // Find the IBR document by its ID and delete it
+    // Record this deletion action in the modification history
+    // Revalidate a specified path, possibly related to caching mechanisms
+  } catch (error) {
+    throw new Error(typeof error === "string" ? error : JSON.stringify(error));
+  }
+};
+
+
+```
+This function deletes an IBR record from the database. It receives the ID of the IBR to delete, a path, possibly related to caching mechanisms, and the user ID performing the action. It connects to the database, finds the IBR document by its ID, deletes it, records this deletion action in the modification history, and possibly revalidates the specified path.
+
+```tsx:uploadIBRFromExcel
+
+export const uploadIBRFromExcel = async (data: any, userId: string) => {
+  try {
+    await connectToDatabase();
+    // Insert IBR records from Excel data into the database
+    // Record this bulk insertion action in the modification history
+    // Return a success message
+  } catch (error) {
+    throw new Error(typeof error === "string" ? error : JSON.stringify(error));
+  }
+};
+
+```
+This function uploads IBR records from an Excel file into the database. It receives data containing IBR records and the user ID performing the action. It connects to the database, inserts the provided data into the IBR collection, records this bulk insertion action in the modification history, and returns a success message.

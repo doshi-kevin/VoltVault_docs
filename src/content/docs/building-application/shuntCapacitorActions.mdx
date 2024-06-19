@@ -1,0 +1,101 @@
+---
+title: "Shunt Capacitor Actions"
+description: "
+This file contains functions to interact with a database for managing shunt capacitors. It includes functionalities such as retrieving shunt capacitors with pagination and search, creating, updating, and deleting individual shunt capacitors, as well as uploading data from Excel files. Additionally, it maintains a modification history for tracking changes made to shunt capacitors."
+---
+
+In the <Highlight>src/lib/actions</Highlight> directory, You can find the <Highlight>shuntCapacitor.actions.ts</Highlight>
+
+## Functions
+
+```tsx:getAllShuntCapacitors
+
+export const getAllShuntCapacitors = async (
+  limit = 10,
+  page = 1,
+  query = "",
+  columns: IColumn[]
+): Promise<{
+  data: IShuntCapacitor[];
+  status: number;
+  totalPages: number;
+  totalDocuments: number;
+  completeData: IShuntCapacitor[];
+}> => {
+  try {
+    // Implementation code to retrieve shunt capacitors based on parameters
+  } catch (error) {
+    throw new Error(typeof error === "string" ? error : JSON.stringify(error));
+  }
+};
+
+```
+This function retrieves shunt capacitors from the database based on specified criteria such as pagination, search query, and columns to display. It returns paginated results along with total counts and complete data matching the query.
+
+```tsx:createShuntCapacitor
+
+export const createShuntCapacitor = async (req: ICreateUpdateParams, userId: string) => {
+  const { defaultFields, additionalFields } = req;
+  try {
+    // Implementation code to create a new shunt capacitor
+  } catch (error) {
+    throw new Error(typeof error === "string" ? error : JSON.stringify(error));
+  }
+};
+
+```
+This function creates a new shunt capacitor in the database using the provided parameters, including default and additional fields. It logs the creation of the new record in the modification history and returns the newly created shunt capacitor.
+
+```tsx:getShuntCapacitorById
+
+export const getShuntCapacitorById = async (id: string) => {
+  try {
+    // Implementation code to fetch a shunt capacitor by ID
+  } catch (error) {
+    throw new Error(typeof error === "string" ? error : JSON.stringify(error));
+  }
+};
+
+```
+This function fetches a specific shunt capacitor from the database by its unique ID. If the shunt capacitor exists, it returns its details; otherwise, it returns a "not found" message.
+
+```tsx:updateShuntCapacitor
+
+export const updateShuntCapacitor = async (req: ICreateUpdateParams, id: string, userId: string) => {
+  const { defaultFields, additionalFields } = req;
+  try {
+    // Implementation code to update a shunt capacitor
+  } catch (error) {
+    throw new Error(typeof error === "string" ? error : JSON.stringify(error));
+  }
+};
+
+```
+
+This function updates an existing shunt capacitor in the database based on the provided parameters. It logs the changes made to the shunt capacitor in the modification history and returns the updated shunt capacitor.
+
+```tsx:deleteShuntCapacitor
+
+export const deleteShuntCapacitor = async (id: string, path: string, userId: string) => {
+  try {
+    // Implementation code to delete a shunt capacitor
+  } catch (error) {
+    throw new Error(typeof error === "string" ? error : JSON.stringify(error));
+  }
+};
+
+```
+This function deletes a shunt capacitor from the database by its ID. It also logs the deletion in the modification history and revalidates the specified path, presumably for cache invalidation.
+
+```tsx:uploadSeriesCapacitorFromExcel
+
+export const uploadShuntCapacitorFromExcel = async (data: any, userId: string) => {
+  try {
+    // Implementation code to upload shunt capacitors from Excel
+  } catch (error) {
+    throw new Error(typeof error === "string" ? error : JSON.stringify(error));
+  }
+};
+
+```
+This function uploads shunt capacitors from an Excel file into the database. It inserts the data from the file into the ShuntCapacitor collection and logs the upload in the modification history.

@@ -1,0 +1,39 @@
+---
+title: "Series Capacitor Schema"
+description: "This script defines a Mongoose schema `seriesCapacitorSchema` for series capacitors, storing attributes like device name, MVAR rating, compensation details, and customizable fields. It supports real-time change stream monitoring and exports the `SeriesCapacitor` model for MongoDB CRUD operations on series capacitors."
+---
+
+
+In the <Highlight>src/content/docs/models</Highlight> directory, You can find the <Highlight>SeriesCapacitor.mdx</Highlight>
+
+## Functions
+
+```tsx:seriesCapacitorSchema
+
+const seriesCapacitorSchema = new Schema(
+  {
+    id: {
+      type: String,
+    },
+    deviceName: {
+      type: String,
+    },
+    mvar: {
+      type: String,
+    },
+    compensation: {
+      type: String,
+    },
+    additionalFields: {
+      type: Schema.Types.Mixed,
+      default: {},
+    },
+  },
+  {
+    collectionOptions: { changeStreamPreAndPostImages: { enabled: true } },
+  }
+);
+
+```
+
+This script defines a Mongoose schema for representing series capacitors in a database, storing attributes like device name, MVAR rating, and compensation details. It includes a field for additional custom fields. The schema is configured to enable change stream monitoring for real-time updates. It exports a model named SeriesCapacitor for CRUD operations, facilitating interaction with the MongoDB collection for series capacitors.

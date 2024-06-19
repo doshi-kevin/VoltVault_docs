@@ -1,0 +1,162 @@
+---
+title: "Data Request Actions"
+description: "This file contains functions for handling CRUD operations on data requests within a server application."
+---
+
+In the <Highlight>src/lib/actions</Highlight> directory, You can find the <Highlight>dataRequest.actions.ts</Highlight>
+
+## Functions
+
+```tsx:getAllDataRequests
+
+export const getAllDataRequests = async ({
+  query,
+  status,
+  limit = 10,
+  page = 1,
+}: {
+  query: string;
+  status: string;
+  limit: number;
+  page: number;
+}): Promise<{ data: IRequest[]; status: number; totalPages: number; totalDocuments: number }> => {
+  try {
+    await connectToDatabase();
+
+    // Build query conditions based on input parameters
+    const conditions: any = {};
+    if (query) {
+      const user = await User.findOne({ name: { $regex: `.*${query}.*`, $options: "i" } });
+      if (user) conditions.user = user._id;
+      else return { data: [], status: 200, totalDocuments: 0, totalPages: 0 };
+    }
+    if (status) conditions.status = status;
+
+    // Perform database query and pagination
+    const skipAmount = (Number(page) - 1) * limit;
+    const requests = await DataRequest.find(conditions)
+      .populate("user")
+      .sort({ date: -1 })
+      .skip(skipAmount)
+      .limit(limit);
+    const totalDocuments = await DataRequest.countDocuments(conditions);
+
+    // Return result
+    return {
+      data: JSON.parse(JSON.stringify(requests)),
+      status: 200,
+      totalPages: Math.ceil(totalDocuments / limit),
+      totalDocuments: totalDocuments,
+    };
+  } catch (error) {
+    throw new Error(typeof error === "string" ? error : JSON.stringify(error));
+  }
+};
+
+```
+
+This function retrieves data requests from the database based on specified criteria such as query, status, limit, and page. It first establishes a database connection, then constructs query conditions based on the provided parameters. After querying the database and performing pagination, it returns an object containing the retrieved data, status code, total pages, and total documents.
+
+```tsx:createDataRequest
+
+export const createDataRequest = async (req: { userId: string; message: string }) => {
+  const { userId, message } = req;
+  const id = new ObjectId(userId);
+  const date = new Date();
+  try {
+    await connectToDatabase();
+    const newRequest = new DataRequest({ user: id, message, date });
+    await newRequest.save();
+    return { data: JSON.parse(JSON.stringify(newRequest)), status: 200 };
+  } catch (error) {
+    throw new Error(typeof error === "string" ? error : JSON.stringify(error));
+  }
+};
+
+
+```
+This function creates a new data request with the provided user ID and message, storing it in the database. It first establishes a database connection, then creates a new DataRequest object with the provided parameters. After saving the new request to the database, it returns an object containing the newly created data request and a status code.
+
+```tsx:getAllDataRequests
+
+export const getAllDataRequests = async ({
+  query,
+  status,
+  limit = 10,
+  page = 1,
+}: {
+  query: string;
+  status: string;
+  limit: number;
+  page: number;
+}): Promise<{ data: IRequest[]; status: number; totalPages: number; totalDocuments: number }> => {
+  try {
+    await connectToDatabase();
+
+    // Build query conditions based on input parameters
+    const conditions: any = {};
+    if (query) {
+      const user = await User.findOne({ name: { $regex: `.*${query}.*`, $options: "i" } });
+      if (user) conditions.user = user._id;
+      else return { data: [], status: 200, totalDocuments: 0, totalPages: 0 };
+    }
+    if (status) conditions.status = status;
+
+    // Perform database query and pagination
+    const skipAmount = (Number(page) - 1) * limit;
+    const requests = await DataRequest.find(conditions)
+      .populate("user")
+      .sort({ date: -1 })
+      .skip(skipAmount)
+      .limit(limit);
+    const totalDocuments = await DataRequest.countDocuments(conditions);
+
+    // Return result
+    return {
+      data: JSON.parse(JSON.stringify(requests)),
+      status: 200,
+      totalPages: Math.ceil(totalDocuments / limit),
+      totalDocuments: totalDocuments,
+    };
+  } catch (error) {
+    throw new Error(typeof error === "string" ? error : JSON.stringify(error));
+  }
+};
+
+```
+
+This function retrieves data requests from the database based on specified criteria such as query, status, limit, and page. It first establishes a database connection, then constructs query conditions based on the provided parameters. After querying the database and performing pagination, it returns an object containing the retrieved data, status code, total pages, and total documents.
+
+```tsx:updateDataRequest
+
+export const updateDataRequest = async ({ status, id }: { status: boolean; id: string }) => {
+  try {
+    await connectToDatabase();
+    const request = await DataRequest.findById(id);
+    if (!request) return { data: "Request not found", status: 404 };
+    const req = await DataRequest.findByIdAndUpdate(id, { status: status ? "Completed" : "Rejected" });
+    return { data: JSON.parse(JSON.stringify(req)), status: 200 };
+  } catch (error) {
+    throw new Error(typeof error === "string" ? error : JSON.stringify(error));
+  }
+};
+
+
+```
+
+This function updates the status of a data request identified by its ID. It first establishes a database connection, then retrieves the request from the database. If the request is not found, it returns an error response. Otherwise, it updates the request's status to "Completed" or "Rejected" based on the provided status, then returns an object containing the updated data request and a status code.
+
+```tsx:deletedDataRequest
+
+export const deleteDataRequest = async (id: string) => {
+  try {
+    await connectToDatabase();
+    const response = await DataRequest.findByIdAndDelete(id);
+    return { data: "Request deleted successfully", status: 200 };
+  } catch (error) {
+    throw new Error(typeof error === "string" ? error : JSON.stringify(error));
+  }
+};
+
+```
+This function deletes a data request from the database based on its ID. It first establishes a database connection, then deletes the request using its ID. After successful deletion, it returns an object containing a success message and a status code.

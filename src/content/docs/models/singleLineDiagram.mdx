@@ -1,0 +1,33 @@
+---
+title: "singleLineDiagram Schema"
+description: "This code defines a Mongoose schema for storing single-line diagrams in a database, featuring fields like ID, description, image URL, and additionalFields for custom data. It enables real-time change stream monitoring and exports the SingleLineDiagram model for CRUD operations on MongoDB."
+---
+
+
+In the <Highlight>src/content/docs/models</Highlight> directory, You can find the <Highlight>SingleLineDiagram.mdx</Highlight>
+
+## Functions
+```tsx:singleLineDiagramSchema
+
+const singleLineDiagramSchema = new Schema(
+  {
+    id: {
+      type: String,
+    },
+    description: {
+      type: String,
+    },
+    image: {
+      type: String,
+    },
+    additionalFields: {
+      type: Schema.Types.Mixed,
+      default: {},
+    },
+  },
+  {
+    collectionOptions: { changeStreamPreAndPostImages: { enabled: true } },
+  }
+);
+```
+This snippet defines a Mongoose schema for storing single-line diagrams in a database. Each document in the collection contains fields for ID, description, image (presumably a reference or URL), and additionalFields for custom data. The schema is configured to enable change stream monitoring for real-time updates. The exported model, SingleLineDiagram, facilitates interaction with the MongoDB collection for CRUD operations on single-line diagram data.

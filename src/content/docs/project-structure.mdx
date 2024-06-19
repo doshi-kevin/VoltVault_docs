@@ -1,0 +1,348 @@
+---
+title: "PowerVolt Project Structure"
+descrription: "The project structure in NextJS 14"
+---
+
+This page provides an overview of the file and folder structure of a Next.js project. It covers top-level files and folders, configuration files, and routing conventions within the app and pages directories.
+
+## Top-level folders
+
+<Table>
+  <TableCaption>A list directories to be maintained in project</TableCaption>
+  <TableBody>
+    <TableRow>
+      <TableCell className="font-medium">
+        <Highlight>src</Highlight>
+      </TableCell>
+      <TableCell className="text-right">App Router</TableCell>
+    </TableRow>
+    <TableRow>
+      <TableCell className="font-medium">
+        <Highlight>public</Highlight>
+      </TableCell>
+      <TableCell className="text-right">Static assets to be served</TableCell>
+    </TableRow>
+    <TableRow>
+      <TableCell className="font-medium">
+        <Highlight>types</Highlight>
+      </TableCell>
+      <TableCell className="text-right">Authentication code</TableCell>
+    </TableRow>
+  </TableBody>
+</Table>
+
+## app Routing Conventions
+
+<Table>
+  <TableCaption>app-router routing Files</TableCaption>
+  <TableBody>
+    <TableRow>
+      <TableCell className="font-medium">
+        <Highlight>layout</Highlight>
+      </TableCell>
+      <TableCell>
+        <Highlight>.js</Highlight>
+        {"  "} <Highlight>.jsx</Highlight>
+        {"  "} <Highlight>.tsx</Highlight>
+      </TableCell>
+      <TableCell className="text-right">App Router</TableCell>
+    </TableRow>
+    <TableRow>
+      <TableCell className="font-medium">
+        <Highlight>public</Highlight>
+      </TableCell>
+      <TableCell className="font-medium">
+        <Highlight>app</Highlight>
+      </TableCell>
+      <TableCell className="text-right">Static assets to be served</TableCell>
+    </TableRow>
+    <TableRow>
+      <TableCell className="font-medium">
+        <Highlight>src</Highlight>
+      </TableCell>
+      <TableCell className="font-medium">
+        <Highlight>app</Highlight>
+      </TableCell>
+      <TableCell className="text-right">Optional application source</TableCell>
+    </TableRow>
+  </TableBody>
+</Table>
+
+## File Structure
+
+The file structure of the project is as follows:
+
+
+```
+iitb-project-main
+├─ .eslintrc.json
+├─ .gitignore
+├─ components.json
+├─ next.config.mjs
+├─ package-lock.json
+├─ package.json
+├─ postcss.config.js
+├─ public
+│  ├─ assets
+│  │  ├─ icons
+│  │  │  ├─ search.svg
+│  │  │  └─ upload.svg
+│  │  └─ images
+│  │     ├─ light-bulb.jpg
+│  │     └─ logo.png
+│  ├─ next.svg
+│  └─ vercel.svg
+├─ src
+│  ├─ app
+│  │  ├─ (root)
+│  │  │  ├─ bus
+│  │  │  │  ├─ create
+│  │  │  │  │  └─ page.tsx
+│  │  │  │  ├─ page.tsx
+│  │  │  │  └─ [id]
+│  │  │  │     └─ page.tsx
+│  │  │  ├─ dataRequests
+│  │  │  │  └─ page.tsx
+│  │  │  ├─ excitationSystem
+│  │  │  │  ├─ create
+│  │  │  │  │  └─ page.tsx
+│  │  │  │  ├─ page.tsx
+│  │  │  │  └─ [id]
+│  │  │  │     └─ page.tsx
+│  │  │  ├─ generator
+│  │  │  │  ├─ create
+│  │  │  │  │  └─ page.tsx
+│  │  │  │  ├─ page.tsx
+│  │  │  │  └─ [id]
+│  │  │  │     └─ page.tsx
+│  │  │  ├─ historyLog
+│  │  │  │  └─ page.tsx
+│  │  │  ├─ ibr
+│  │  │  │  ├─ create
+│  │  │  │  │  └─ page.tsx
+│  │  │  │  ├─ page.tsx
+│  │  │  │  └─ [id]
+│  │  │  │     └─ page.tsx
+│  │  │  ├─ layout.tsx
+│  │  │  ├─ lccHVDCLink
+│  │  │  │  ├─ create
+│  │  │  │  │  └─ page.tsx
+│  │  │  │  ├─ page.tsx
+│  │  │  │  └─ [id]
+│  │  │  │     └─ page.tsx
+│  │  │  ├─ load
+│  │  │  │  ├─ create
+│  │  │  │  │  └─ page.tsx
+│  │  │  │  ├─ page.tsx
+│  │  │  │  └─ [id]
+│  │  │  │     └─ page.tsx
+│  │  │  ├─ loginRequests
+│  │  │  │  └─ page.tsx
+│  │  │  ├─ profile
+│  │  │  │  └─ page.tsx
+│  │  │  ├─ seriesCapacitor
+│  │  │  │  ├─ create
+│  │  │  │  │  └─ page.tsx
+│  │  │  │  ├─ page.tsx
+│  │  │  │  └─ [id]
+│  │  │  │     └─ page.tsx
+│  │  │  ├─ seriesFact
+│  │  │  │  ├─ create
+│  │  │  │  │  └─ page.tsx
+│  │  │  │  ├─ page.tsx
+│  │  │  │  └─ [id]
+│  │  │  │     └─ page.tsx
+│  │  │  ├─ shuntCapacitor
+│  │  │  │  ├─ create
+│  │  │  │  │  └─ page.tsx
+│  │  │  │  ├─ page.tsx
+│  │  │  │  └─ [id]
+│  │  │  │     └─ page.tsx
+│  │  │  ├─ shuntFact
+│  │  │  │  ├─ create
+│  │  │  │  │  └─ page.tsx
+│  │  │  │  ├─ page.tsx
+│  │  │  │  └─ [id]
+│  │  │  │     └─ page.tsx
+│  │  │  ├─ shuntReactor
+│  │  │  │  ├─ create
+│  │  │  │  │  └─ page.tsx
+│  │  │  │  ├─ page.tsx
+│  │  │  │  └─ [id]
+│  │  │  │     └─ page.tsx
+│  │  │  ├─ singleLineDiagram
+│  │  │  │  ├─ create
+│  │  │  │  │  └─ page.tsx
+│  │  │  │  ├─ page.tsx
+│  │  │  │  └─ [id]
+│  │  │  │     └─ page.tsx
+│  │  │  ├─ tempData
+│  │  │  │  └─ page.tsx
+│  │  │  ├─ transformersThreeWinding
+│  │  │  │  ├─ create
+│  │  │  │  │  └─ page.tsx
+│  │  │  │  ├─ page.tsx
+│  │  │  │  └─ [id]
+│  │  │  │     └─ page.tsx
+│  │  │  ├─ transformersTwoWinding
+│  │  │  │  ├─ create
+│  │  │  │  │  └─ page.tsx
+│  │  │  │  ├─ page.tsx
+│  │  │  │  └─ [id]
+│  │  │  │     └─ page.tsx
+│  │  │  ├─ transmissionLine
+│  │  │  │  ├─ create
+│  │  │  │  │  └─ page.tsx
+│  │  │  │  ├─ page.tsx
+│  │  │  │  └─ [id]
+│  │  │  │     └─ page.tsx
+│  │  │  ├─ turbineGovernor
+│  │  │  │  ├─ create
+│  │  │  │  │  └─ page.tsx
+│  │  │  │  ├─ page.tsx
+│  │  │  │  └─ [id]
+│  │  │  │     └─ page.tsx
+│  │  │  ├─ users
+│  │  │  │  └─ page.tsx
+│  │  │  └─ vscHVDCLink
+│  │  │     ├─ create
+│  │  │     │  └─ page.tsx
+│  │  │     ├─ page.tsx
+│  │  │     └─ [id]
+│  │  │        └─ page.tsx
+│  │  ├─ api
+│  │  │  └─ uploadthing
+│  │  │     ├─ core.ts
+│  │  │     └─ route.ts
+│  │  ├─ favicon.ico
+│  │  ├─ globals.css
+│  │  ├─ layout.tsx
+│  │  └─ page.tsx
+│  ├─ components
+│  │  ├─ AddColumns.tsx
+│  │  ├─ CreateForm.tsx
+│  │  ├─ DeleteConfirmation.tsx
+│  │  ├─ DisplayTable.tsx
+│  │  ├─ ExcelFileUploader.tsx
+│  │  ├─ FileUploader.tsx
+│  │  ├─ FilteredHistory.tsx
+│  │  ├─ ForgotPasswordEmailForm.tsx
+│  │  ├─ FormSkeleton.tsx
+│  │  ├─ HeroSection.tsx
+│  │  ├─ ImportFromExcel.tsx
+│  │  ├─ LoginForm.tsx
+│  │  ├─ LoginProvider.tsx
+│  │  ├─ Navbar.tsx
+│  │  ├─ NothingToDisplay.tsx
+│  │  ├─ PaginationComponent.tsx
+│  │  ├─ PrintDataRequests.tsx
+│  │  ├─ PrintLoginRequests.tsx
+│  │  ├─ PrintModificationHistory.tsx
+│  │  ├─ ProfileIcon.tsx
+│  │  ├─ PushMockData.tsx
+│  │  ├─ RequestChange.tsx
+│  │  ├─ RequestLoginForm.tsx
+│  │  ├─ RequestsHeader.tsx
+│  │  ├─ ResetPasswordForm.tsx
+│  │  ├─ Search.tsx
+│  │  ├─ SecuritySetting.tsx
+│  │  ├─ Sidebar.tsx
+│  │  ├─ TableHeading.tsx
+│  │  ├─ TableSkeleton.tsx
+│  │  ├─ ToggleColumns.tsx
+│  │  ├─ ui
+│  │  │  ├─ accordion.tsx
+│  │  │  ├─ alert-dialog.tsx
+│  │  │  ├─ avatar.tsx
+│  │  │  ├─ badge.tsx
+│  │  │  ├─ breadcrumb.tsx
+│  │  │  ├─ button.tsx
+│  │  │  ├─ card.tsx
+│  │  │  ├─ dialog.tsx
+│  │  │  ├─ form.tsx
+│  │  │  ├─ input.tsx
+│  │  │  ├─ label.tsx
+│  │  │  ├─ pagination.tsx
+│  │  │  ├─ popover.tsx
+│  │  │  ├─ radio-group.tsx
+│  │  │  ├─ select.tsx
+│  │  │  ├─ separator.tsx
+│  │  │  ├─ skeleton.tsx
+│  │  │  ├─ table.tsx
+│  │  │  ├─ text-generate-effect.tsx
+│  │  │  ├─ textarea.tsx
+│  │  │  ├─ tooltip.tsx
+│  │  │  └─ typewriter-effect.tsx
+│  │  ├─ UsersFilter.tsx
+│  │  └─ UsersTable.tsx
+│  ├─ context
+│  │  └─ AuthContext.tsx
+│  ├─ lib
+│  │  ├─ actions
+│  │  │  ├─ bus.actions.ts
+│  │  │  ├─ dataRequest.actions.ts
+│  │  │  ├─ defaultParams.actions.ts
+│  │  │  ├─ excitationSystem.actions.ts
+│  │  │  ├─ generator.actions.ts
+│  │  │  ├─ ibr.actions.ts
+│  │  │  ├─ lccHVDCLink.actions.ts
+│  │  │  ├─ load.actions.ts
+│  │  │  ├─ loginRequest.actions.ts
+│  │  │  ├─ modificationHistory.actions.ts
+│  │  │  ├─ seriesCapacitor.actions.ts
+│  │  │  ├─ seriesFact.actions.ts
+│  │  │  ├─ shuntCapacitor.actions.ts
+│  │  │  ├─ shuntFact.actions.ts
+│  │  │  ├─ shuntReactor.actions.ts
+│  │  │  ├─ singleLineDiagram.actions.ts
+│  │  │  ├─ transformersThreeWinding.actions.ts
+│  │  │  ├─ transformersTwoWinding.actions.ts
+│  │  │  ├─ transmissionLines.actions.ts
+│  │  │  ├─ turbineGovernor.actions.ts
+│  │  │  ├─ users.actions.ts
+│  │  │  └─ vscHVDCLink.actions.ts
+│  │  ├─ authOptions.ts
+│  │  ├─ constants.ts
+│  │  ├─ database
+│  │  │  ├─ database.ts
+│  │  │  └─ models
+│  │  │     ├─ bus.ts
+│  │  │     ├─ dataRequest.ts
+│  │  │     ├─ defaultParams.ts
+│  │  │     ├─ excitationSystem.ts
+│  │  │     ├─ generator.ts
+│  │  │     ├─ ibr.ts
+│  │  │     ├─ lccHVDCLink.ts
+│  │  │     ├─ load.ts
+│  │  │     ├─ loginRequests.ts
+│  │  │     ├─ modificationHistory.ts
+│  │  │     ├─ seriesCapacitor.ts
+│  │  │     ├─ seriesFact.ts
+│  │  │     ├─ shuntCapacitor.ts
+│  │  │     ├─ shuntFact.ts
+│  │  │     ├─ shuntReactor.ts
+│  │  │     ├─ singleLineDiagram.ts
+│  │  │     ├─ transformersThreeWinding.ts
+│  │  │     ├─ transformersTwoWinding.ts
+│  │  │     ├─ transmissionLines.ts
+│  │  │     ├─ turbineGovernorColumns.ts
+│  │  │     ├─ User.ts
+│  │  │     └─ vscHVDCLink.ts
+│  │  ├─ firebase
+│  │  │  ├─ config.ts
+│  │  │  └─ storage.ts
+│  │  ├─ uploadthing.ts
+│  │  └─ utils.ts
+│  ├─ middleware.ts
+│  └─ utils
+│     ├─ defaultTypes.ts
+│     ├─ emailHtmlTemplate.tsx
+│     ├─ helperFunctions.ts
+│     └─ uploadthing.ts
+├─ tailwind.config.ts
+├─ tsconfig.json
+├─ types
+│  └─ next-auth.d.ts
+└─ xlsx.d.ts
+
+```

@@ -1,0 +1,96 @@
+---
+title: "Generator Schema"
+description: "This code defines `generatorSchema`, a Mongoose schema for representing generator data with fields like `deviceName`, `type`, `mw`, and customizable attributes. It supports complex fields such as reactance and time constants, includes options for real-time change stream monitoring, and exports a Mongoose model named `Generator` for MongoDB interaction."
+---
+
+
+In the <Highlight>src/content/docs/models</Highlight> directory, You can find the <Highlight>generator.mdx</Highlight>
+
+## Functions
+
+```tsx:generatorSchema
+
+const generatorSchema = new Schema(
+  {
+    id: {
+      type: String,
+    },
+    deviceName: {
+      type: String,
+    },
+    busTo: {
+      type: String,
+    },
+    busSectionTo: {
+      type: String,
+    },
+    type: {
+      type: String,
+    },
+    rotor: {
+      type: String,
+    },
+    mw: {
+      type: String,
+    },
+    mva: {
+      type: String,
+    },
+    kv: {
+      type: String,
+    },
+    synchronousReactancePu: {
+      type: Schema.Types.Mixed,
+      default: {},
+    },
+    transientReactancePu: {
+      type: Schema.Types.Mixed,
+      default: {},
+    },
+    subtransientReactancePu: {
+      type: Schema.Types.Mixed,
+      default: {},
+    },
+    transientOCTimeConstantSeconds: {
+      type: Schema.Types.Mixed,
+      default: {},
+    },
+    subtransientOCTimeConstantSeconds: {
+      type: Schema.Types.Mixed,
+      default: {},
+    },
+    statorLeakageInductancePu: {
+      type: Schema.Types.Mixed,
+      default: {},
+    },
+    statorResistancePu: {
+      type: Schema.Types.Mixed,
+      default: {},
+    },
+    inertiaMJMVA: {
+      type: Schema.Types.Mixed,
+      default: {},
+    },
+    poles: {
+      type: String,
+    },
+    speed: {
+      type: String,
+    },
+    frequency: {
+      type: String,
+    },
+    additionalFields: {
+      type: Schema.Types.Mixed,
+      default: {},
+    },
+  },
+  {
+    collectionOptions: { changeStreamPreAndPostImages: { enabled: true } },
+  }
+);
+
+
+```
+
+This code defines a Mongoose schema called generatorSchema to represent data for a generator. It includes fields for various attributes such as deviceName, type, mw, and additional customizable fields. The schema also allows for complex attributes like reactance and time constants. Additionally, it sets up options for real-time change stream monitoring. Finally, it exports a Mongoose model named Generator for interacting with MongoDB.

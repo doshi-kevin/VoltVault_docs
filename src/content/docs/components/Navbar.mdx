@@ -1,0 +1,49 @@
+---
+title: "Navbar"
+description: "`Navbar` renders user information and logout functionality based on the `session` state retrieved via `useSession`, showing user details and a logout button when authenticated, utilizing the `signOut` function and displaying a logout loading toast."
+---
+
+In the <Highlight>src/content/docs/component</Highlight> directory, You can find the <Highlight>Navbar.mdx</Highlight>
+
+
+## Functions
+
+```tsx:Navbar
+const Navbar = () => {
+  const { data: session } = useSession();
+
+  return (
+    <div className="absolute right-5 top-2.5">
+      {session ? (
+        <div className="flex items-center gap-2">
+          <div className="flex items-center gap-2">
+            <Avatar className="scale-110">
+              <AvatarImage src={session.user.image || pfp} />
+              <AvatarFallback>CN</AvatarFallback>
+            </Avatar>
+            <div>
+              <p className="text-base">{session.user.name}</p>
+              <p className="text-xs text-gray-500">{session.user.email}</p>
+            </div>
+          </div>
+
+          <CiLogout
+            className="text-3xl cursor-pointer"
+            title="Logout"
+            onClick={() => {
+              signOut();
+              toast.loading("Logging out...");
+            }}
+          />
+        </div>
+      ) : (
+        ""
+      )}
+    </div>
+  );
+};
+
+export default Navbar;
+
+```
+The Navbar component displays the user's avatar, name, and email if they are logged in. It also provides a logout button represented by the "CiLogout" icon. Upon clicking the logout button, it triggers the sign-out process and displays a loading toast indicating that the user is logging out. If no user is logged in, the component doesn't render anything.

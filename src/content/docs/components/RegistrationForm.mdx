@@ -1,0 +1,133 @@
+---
+title: "Registration Form"
+description: "`RegistrationForm` handles user registration with validation for name, email, and password fields. Upon submission, it sends data to the server for registration, displaying success or error messages accordingly."
+---
+
+In the <Highlight>src/content/docs/component</Highlight> directory, You can find the <Highlight>RegistrationForm.mdx</Highlight>
+
+## Functions
+
+```tsx:RegistrationForm
+
+interface IUserRegister {
+  name: string;
+  email: string;
+  password: string;
+}
+
+export default function RegistrationForm() {
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm<IUserRegister>({
+    defaultValues: {
+      name: "",
+      email: "",
+      password: "",
+    },
+  });
+
+  const router = useRouter();
+
+  register("name", { required: "Name is required" });
+  register("password", {
+    required: "Password is required",
+    // pattern: {
+    //   // value: /^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*?&])[^ ]+[A-Za-z\d@$!%*?&]*$/,
+    //   message:
+    //     "Password must contain at least one letter, one number, and one special character and should not contain spaces",
+    // },
+  });
+
+  register("email", {
+    required: "Email address is required",
+    // pattern: {
+    //   value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i,
+    //   message: "Invalid email address format",
+    // },
+  });
+
+  const handleSubmitForm = async (data: IUserRegister) => {
+    // toast loading
+    const toastLoading = toast.loading("Processing...");
+    try {
+      const response = await axios.post("/api/users/register", data);
+      if (response.status === 400) {
+        toast.error("User already exists. Try logging in instead");
+        return;
+      }
+      toast.success("User registration completed successfully");
+      router.push("/");
+    } catch (error: any) {
+      console.log(error);
+      if (error.response.status) return toast.error("User already exists. Try logging in instead");
+      return toast.error("Failed!", error?.message);
+    } finally {
+      toast.dismiss(toastLoading);
+    }
+  };
+
+  return (
+    <>
+      <form onSubmit={handleSubmit(handleSubmitForm)}>
+        <CardContent className="grid gap-4">
+          <div className="grid gap-2">
+            <Label htmlFor="email">Name</Label>
+            <Input
+              id="text"
+              type="name"
+              placeholder="Name"
+              className="focus-visible:ring-offset-0 focus-visible:ring-transparent focus:shadow-blue-500 focus:shadow-[0px_2px_33px_-10px_rgba(0,0,0,0.75)] focus:border-blue-500 focus:outline-none"
+              {...register("name")}
+            />
+            {errors?.name && <span className="text-red-500 text-sm"> {errors?.name?.message} </span>}
+          </div>
+
+          <div className="grid gap-2">
+            <Label htmlFor="email">Email</Label>
+            <Input
+              id="email"
+              type="email"
+              placeholder="abc@xyz.com"
+              className="focus-visible:ring-offset-0 focus-visible:ring-transparent focus:shadow-blue-500 focus:shadow-[0px_2px_33px_-10px_rgba(0,0,0,0.75)] focus:border-blue-500 focus:outline-none"
+              {...register("email")}
+            />
+            {errors?.email && <span className="text-red-500 text-sm"> {errors?.email?.message} </span>}
+          </div>
+          <div className="grid gap-2">
+            <Label htmlFor="password">Password</Label>
+            <Input
+              id="password"
+              type="password"
+              placeholder="Password"
+              className="focus-visible:ring-offset-0 focus-visible:ring-transparent focus:shadow-blue-500 focus:shadow-[0px_2px_33px_-10px_rgba(0,0,0,0.75)] focus:border-blue-500 focus:outline-none"
+              {...register("password")}
+            />
+            {errors?.password && <span className="text-red-500 text-sm"> {errors?.password?.message} </span>}
+          </div>
+        </CardContent>
+        <CardFooter className="flex flex-col gap-5">
+          <Button
+            className="w-full"
+            type="submit"
+          >
+            Create account
+          </Button>
+          <Link
+            href="/login"
+            className="text-gray-500"
+          >
+            Already have an account? <span className="text-blue-500 underline">Login here</span>
+          </Link>
+        </CardFooter>
+      </form>
+    </>
+  );
+}
+
+
+```
+The RegistrationForm component is responsible for rendering a form for user registration. It utilizes the react-hook-form library for form handling and validation. Upon submission, it sends a POST request to the server to create a new user account. If successful, it redirects the user to the home page; otherwise, it displays appropriate error messages.
+
+The form includes fields for name, email, and password, with corresponding validation messages displayed if any of the fields are empty or invalid. Upon successful submission, it displays a success message and redirects the user to the home page. If registration fails due to an existing user or any other reason, it displays an error message.

@@ -1,0 +1,29 @@
+---
+title: "Series Fact Schema"
+description: "This script defines a Mongoose schema for series facts, storing custom fields with real-time change stream monitoring. The SeriesFact model enables CRUD operations on MongoDB for interacting with series fact data."
+---
+
+In the <Highlight>src/content/docs/models</Highlight> directory, You can find the <Highlight>SeriesFact.mdx</Highlight>
+
+
+## Functions
+
+```tsx:seriesFactsSchema
+
+const seriesFactsSchema = new Schema(
+  {
+    id: {
+      type: String,
+    },
+    additionalFields: {
+      type: Schema.Types.Mixed,
+      default: {},
+    },
+  },
+  {
+    collectionOptions: { changeStreamPreAndPostImages: { enabled: true } },
+  }
+);
+
+```
+This script defines a Mongoose schema for representing series facts in a database, storing additional custom fields for each series fact entry. It enables change stream monitoring for real-time updates. The model exported as SeriesFact facilitates CRUD operations on the MongoDB collection, allowing interaction with series fact data.

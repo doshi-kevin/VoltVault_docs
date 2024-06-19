@@ -1,0 +1,149 @@
+---
+title: "AddColumns"
+description: "This script manages the addition, removal, and validation of subcolumns and dropdown values in a form, ensuring that required fields are filled and that subcolumn names are unique. Upon form submission, it validates the input data and attempts to update or add a column, providing appropriate feedback to the user."
+---
+
+In the <Highlight>src/content/docs/component</Highlight> directory, You can find the <Highlight>AddColumns.mdx</Highlight>
+
+## Functions
+
+```tsx:AddColumns
+const addSubcolumn = () => {
+  const currentSubcolumns = getValues("subcolumns") || [];
+  const newSubcolumns = [...currentSubcolumns, { title: "", type: "", dropdownValues: [{ name: "" }] }];
+  setValue("subcolumns", newSubcolumns);
+};
+
+const removeSubcolumn = (index: number) => {
+  const currentSubcolumns = getValues("subcolumns") || [];
+  const newSubcolumns = currentSubcolumns.filter((_, i) => i !== index);
+  setValue("subcolumns", newSubcolumns);
+};
+
+const addDropDownValues = () => {
+  const currentDropdownValues = getValues("dropdownValues") || [];
+  const newDropdownValues = [...currentDropdownValues, { name: "" }];
+  setValue("dropdownValues", newDropdownValues);
+};
+
+const removeDropDownValues = (index: number) => {
+  const currentDropdownValues = getValues("dropdownValues") || [];
+  const newDropdownValues = currentDropdownValues.filter((_, i) => i !== index);
+  setValue("dropdownValues", newDropdownValues);
+};
+
+const addSubcolumnDropDownValues = (index: number) => {
+  const currentDropdownValues = getValues("subcolumns") || [];
+  currentDropdownValues.map((item, ind) => {
+    if (ind === index) item.dropdownValues = [...item.dropdownValues, { name: "" }];
+  });
+  setValue("subcolumns", currentDropdownValues);
+};
+
+const removeSubcolumnDropDownValues = (index: number, subIndex: number) => {
+  const currentDropdownValues = getValues("subcolumns") || [];
+  currentDropdownValues.map((item, ind) => {
+    if (ind === index) {
+      const newDropdownValues = item.dropdownValues.filter((_, i) => i !== subIndex);
+      item.dropdownValues = newDropdownValues;
+    }
+  });
+  setValue("subcolumns", currentDropdownValues);
+};
+
+const handleSubcolumnNameChange = (e: React.ChangeEvent<HTMLInputElement>, index: number) => {
+  const { value } = e.target;
+  if (subcolumns!.length > 1)
+    for (let ind = 0; ind < subcolumns!.length; ind++) {
+      const item = subcolumns![ind];
+      if (value !== "" && item.title.toLowerCase() === value.toLowerCase() && ind !== index) {
+        setError(
+          `subcolumns.${index}.title`,
+          {
+            message: `${value} sub-column name already exists. Please use a different name`,
+          },
+          { shouldFocus: true }
+        );
+        break;
+      } else form.clearErrors(`subcolumns.${index}.title`);
+    }
+};
+
+const onSubmit = async (data: z.infer<typeof FormSchema>) => {
+  if (Object.keys(form.formState.errors).length !== 0) return;
+  if (data.hasSubcolumns === "false") {
+    if (!data.type) {
+      setError("type", { message: "Required" }, { shouldFocus: true });
+      return;
+    }
+  } else {
+    data.type = "subColumns";
+    for (let ind = 0; ind < data.subcolumns!.length; ind++) {
+      const item = data.subcolumns![ind];
+      if (item.title === "") {
+        setError(`subcolumns.${ind}.title`, { message: "Required" }, { shouldFocus: true });
+        return;
+      } else {
+        const duplicate = data.subcolumns?.find(
+          (subItem, i) => subItem.title.toLowerCase() === item.title.toLowerCase() && i < ind
+        );
+        if (duplicate) {
+          setError(
+            `subcolumns.${ind}.title`,
+            {
+              message: `${duplicate.title} sub-column name already exists. Please use a different name`,
+            },
+            { shouldFocus: true }
+          );
+          return;
+        }
+      }
+      if (item.type === "") {
+        setError(`subcolumns.${ind}.type`, { message: "Required" }, { shouldFocus: true });
+        return;
+      }
+      if (item.type === "dropdown") {
+        for (let index = 0; index < item.dropdownValues!.length; index++) {
+          const dropdownItem = item.dropdownValues[index];
+          if (dropdownItem.name === "") {
+            setError(
+              `subcolumns.${ind}.dropdownValues.${index}.name`,
+              { message: "Required" },
+              { shouldFocus: true }
+            );
+            return;
+          }
+        }
+      }
+    }
+  }
+
+  if (data.type === "dropdown") {
+    for (let ind = 0; ind < data.dropdownValues!.length; ind++) {
+      const item = data.dropdownValues![ind];
+      if (item.name === "") {
+        setError(`dropdownValues.${ind}.name`, { message: "Required" }, { shouldFocus: true });
+        return;
+      }
+    }
+  }
+  try {
+    let response;
+    if (columnDetails)
+      response = await editSpecificDefaultParam(data, pathname, userId, columnDetails.isDefault || false);
+    else response = await updateDefaultParams(data, pathname, userId);
+    if (response?.status === 409) {
+      toast.error(response.data + ". Try using a different name");
+    } else if (response?.status === 200) {
+      location.reload();
+      toast.success(
+        columnDetails ? `Column ${data.name} edited successfully` : `New column ${data.name} added successfully`
+      );
+    }
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+```
+This code defines a React component that uses a dialog form to add or edit columns with optional sub-columns for a table. It utilizes libraries like react-hook-form and zod for form handling and validation, providing functionalities for adding, removing, and managing various input fields dynamically based on user interactions.

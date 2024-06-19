@@ -1,0 +1,119 @@
+---
+title: "Login Form"
+description: "The `LoginForm` component renders a login form with email and password fields, including validation and error handling, using React Hook Form. On form submission, it handles user authentication and redirects to the homepage upon successful login, while displaying appropriate toast notifications."
+---
+
+In the <Highlight>src/content/docs/component</Highlight> directory, You can find the <Highlight>LoginForm.mdx</Highlight>
+
+## Functions
+
+```tsx:LoginForm
+interface IUserRegister {
+  email: string;
+  password: string;
+}
+
+export default function LoginForm() {
+  const router = useRouter();
+
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm<IUserRegister>({
+    defaultValues: {
+      email: "",
+      password: "",
+    },
+  });
+
+  register("password", {
+    required: "Password is required",
+    // pattern: {
+    //   value: /^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*?&])[^ ]+[A-Za-z\d@$!%*?&]*$/,
+    //   message: "Password must contain at least one letter, one number, and one special character and should not contain spaces",
+    // },
+  });
+
+  register("email", {
+    required: "Email address is required",
+    // pattern: {
+    //   value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i,
+    //   message: "Invalid email address format",
+    // },
+  });
+
+  const handleSubmitForm = async (data: IUserRegister) => {
+    const toastLoading = toast.loading("Processing...");
+    try {
+      const response = await signIn("credentials", {
+        email: data.email,
+        password: data.password,
+        redirect: false,
+      });
+
+      if (response?.status === 401) return toast.error("Incorrect email or password. Please try again");
+
+      if (response?.status === 404) return toast.error("Email does not exist. Please use another email");
+
+      toast.success("Successfully signed in");
+      toast("Please wait while you are being redirected...", {
+        position: "bottom-right",
+        closeButton: false,
+      });
+      router.push("/");
+    } catch (error: any) {
+      toast.error("Failed!", error?.message);
+    } finally {
+      toast.dismiss(toastLoading);
+    }
+  };
+
+  return (
+    <>
+      <form onSubmit={handleSubmit(handleSubmitForm)}>
+        <CardContent className="grid gap-4">
+          <div className="grid gap-2">
+            <Label htmlFor="email">Email</Label>
+            <Input
+              id="email"
+              type="email"
+              placeholder="abc@xyz.com"
+              className="focus-visible:ring-offset-0 focus-visible:ring-transparent focus:shadow-blue-500 focus:shadow-[0px_2px_33px_-10px_rgba(0,0,0,0.75)] focus:border-blue-500 focus:outline-none"
+              {...register("email")}
+            />
+            {errors?.email && <span className="text-red-500 text-sm"> {errors?.email?.message} </span>}
+          </div>
+          <div className="grid gap-2">
+            <Label htmlFor="password">Password</Label>
+            <Input
+              id="password"
+              type="password"
+              placeholder="Pawwsord"
+              className="focus-visible:ring-offset-0 focus-visible:ring-transparent focus:shadow-blue-500 focus:shadow-[0px_2px_33px_-10px_rgba(0,0,0,0.75)] focus:border-blue-500 focus:outline-none"
+              {...register("password")}
+            />
+            {errors?.password && <span className="text-red-500 text-sm"> {errors?.password?.message} </span>}
+          </div>
+        </CardContent>
+        <CardFooter className="flex flex-col gap-5">
+          <Button
+            className="w-full"
+            type="submit"
+          >
+            Login
+          </Button>
+          <Link
+            href="/register"
+            className="text-gray-500"
+          >
+            Don't have an account? <span className="text-blue-500 underline">Create new account</span>
+          </Link>
+        </CardFooter>
+      </form>
+    </>
+  );
+}
+
+```
+The LoginForm component renders a form for user login. It includes input fields for email and password, with validation messages displayed if there are any errors. Upon submission, it sends a request to sign in with the provided credentials. If successful, it redirects the user to the home page; otherwise, it displays error messages accordingly. Additionally, there's a link to the registration page for users who don't have an account yet.

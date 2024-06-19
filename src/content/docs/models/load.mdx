@@ -1,0 +1,46 @@
+---
+title: "Load Schema"
+description: "This script defines a Mongoose schema `loadSchema` for representing loads in a power system, including fields like ID, device name, power generation values (pMW and qMvar), and customizable fields stored as mixed types. It supports real-time change stream monitoring and exports the `Load` model for comprehensive CRUD operations on loads."
+---
+
+
+In the <Highlight>src/content/docs/models</Highlight> directory, You can find the <Highlight>Load.mdx</Highlight>
+
+## Functions
+
+```tsx:loadSchema
+
+const loadSchema = new Schema(
+  {
+    id: {
+      type: String,
+    },
+    deviceName: {
+      type: String,
+    },
+    busFrom: {
+      type: String,
+    },
+    busSectionFrom: {
+      type: String,
+    },
+    pMW: {
+      type: String,
+    },
+    qMvar: {
+      type: String,
+    },
+    additionalFields: {
+      type: Schema.Types.Mixed,
+      default: {},
+    },
+  },
+  {
+    collectionOptions: { changeStreamPreAndPostImages: { enabled: true } },
+  }
+);
+
+
+```
+
+This script defines a Mongoose schema for representing loads in a power system, capturing fields such as ID, device name, power generation values (pMW and qMvar), and additional customizable fields. The schema is configured to enable change stream monitoring for real-time updates. The script exports a model named Load for database operations, facilitating CRUD (Create, Read, Update, Delete) functionalities for loads.

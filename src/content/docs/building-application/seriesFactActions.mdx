@@ -1,0 +1,110 @@
+---
+title: "Seies Fact Actions"
+description: "
+This file contains functions to manage series facts in a database. It includes functions to retrieve all series facts, create a new series Fact record, retrieve a series fact by its ID, update an existing series Fact, delete a series fact, and upload series fact from an Excel file. Each function interacts with the database, performs the specified operation, and handles any errors that may occur during the process."
+---
+
+In the <Highlight>src/lib/actions</Highlight> directory, You can find the <Highlight>seriesFact.actions.ts</Highlight>
+
+## Functions
+
+```tsx:getAllSeriesFacts
+
+export const getAllSeriesFacts = async (
+  limit = 10,
+  page = 1,
+  query = "",
+  columns: IColumn[]
+): Promise<{
+  data: INonDefaultDatabases[];
+  status: number;
+  totalPages: number;
+  totalDocuments: number;
+  completeData: INonDefaultDatabases[];
+}> => {
+  try {
+    await connectToDatabase();
+    // Implementation code here
+  } catch (error) {
+    throw new Error(typeof error === "string" ? error : JSON.stringify(error));
+  }
+};
+
+```
+This function retrieves series facts from the database based on specified criteria such as pagination, search query, and columns to display. It returns paginated results along with total counts and complete data matching the query.
+
+```tsx:createSeriesFact
+
+export const createSeriesFact = async (req: ICreateUpdateParams, userId: string) => {
+  const { defaultFields, additionalFields } = req;
+  try {
+    await connectToDatabase();
+    // Implementation code here
+  } catch (error) {
+    throw new Error(typeof error === "string" ? error : JSON.stringify(error));
+  }
+};
+ 
+
+```
+This function creates a new series fact in the database using the provided parameters, including default and additional fields. It logs the creation of the new record in the modification history and returns the newly created series fact.
+
+```tsx:getSeriesFactById
+
+export const getSeriesFactById = async (id: string) => {
+  try {
+    await connectToDatabase();
+    // Implementation code here
+  } catch (error) {
+    throw new Error(typeof error === "string" ? error : JSON.stringify(error));
+  }
+};
+
+
+```
+This function fetches a specific series fact from the database by its unique ID. If the series fact exists, it returns its details; otherwise, it returns a "not found" message.
+
+```tsx:updateSeriesFact
+
+export const updateSeriesFact = async (req: ICreateUpdateParams, id: string, userId: string) => {
+  const { defaultFields, additionalFields } = req;
+  try {
+    await connectToDatabase();
+    // Implementation code here
+  } catch (error) {
+    throw new Error(typeof error === "string" ? error : JSON.stringify(error));
+  }
+};
+
+
+```
+
+This function updates an existing series fact in the database based on the provided parameters. It logs the changes made to the series fact in the modification history and returns the updated series fact.
+
+```tsx:deleteSeriesFact
+
+export const deleteSeriesFact = async (id: string, path: string, userId: string) => {
+  try {
+    await connectToDatabase();
+    // Implementation code here
+  } catch (error) {
+    throw new Error(typeof error === "string" ? error : JSON.stringify(error));
+  }
+};
+
+```
+This function deletes a series fact from the database by its ID. It also logs the deletion in the modification history and revalidates the specified path, presumably for cache invalidation.
+
+```tsx:uploadSeriesFactFromExcel
+
+export const uploadSeriesFactFromExcel = async (data: any, userId: string) => {
+  try {
+    await connectToDatabase();
+    // Implementation code here
+  } catch (error) {
+    throw new Error(typeof error === "string" ? error : JSON.stringify(error));
+  }
+};
+
+```
+This function uploads series facts from an Excel file into the database. It inserts the data from the file into the SeriesFact collection and logs the upload in the modification history.

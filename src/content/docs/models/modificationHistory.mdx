@@ -1,0 +1,42 @@
+---
+title: "ModificationHistory Schema"
+description: "This script defines a Mongoose schema `modificationHistorySchema` for recording database modification history, storing user ID, database name, operation type, modification date, and document snapshots before and after changes. It includes column-level details for granular tracking and supports real-time change stream monitoring. The script exports the `ModificationHistory` model for managing modification records in the database."
+---
+
+
+In the <Highlight>src/content/docs/models</Highlight> directory, You can find the <Highlight>ModificationHistory.mdx</Highlight>
+
+## Functions
+
+```tsx:modificationHistorySchema
+
+const modificationHistorySchema = new Schema(
+  {
+    userId: {
+      type: Schema.Types.ObjectId,
+      ref: "User",
+    },
+    databaseName: {
+      type: String,
+    },
+    operationType: {
+      type: String,
+    },
+    date: {
+      type: Date,
+    },
+    document: {
+      id: { type: String },
+      documentBeforeChange: { type: Schema.Types.Mixed },
+      documentAfterChange: { type: Schema.Types.Mixed },
+      columnDetails: { type: Schema.Types.Mixed },
+    },
+  },
+  {
+    collectionOptions: { changeStreamPreAndPostImages: { enabled: true } },
+  }
+);
+
+```
+
+This script defines a Mongoose schema for recording modification history in a database, storing details such as the user ID, database name, operation type, date of modification, and the document before and after changes. It also captures column-level details for more granular tracking. The schema configuration enables change stream monitoring for real-time updates. The script exports a model named ModificationHistory for database operations, facilitating tracking and retrieval of modification records.

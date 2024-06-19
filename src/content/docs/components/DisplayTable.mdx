@@ -1,0 +1,153 @@
+---
+title: "Display Table"
+description: "This file provides functions to generate a PDF or Excel file from a given data set, converting HTML table structures to the respective formats. The `downloadPDF` function uses jsPDF to create a PDF, while `fnExportToExcel` uses XLSX to create and download an Excel file."
+---
+
+In the <Highlight>src/content/docs/component</Highlight> directory, You can find the <Highlight>DisplayTable.mdx</Highlight>
+
+## Functions
+
+```tsx:DisplayTable
+
+import jsPDF from "jspdf";
+import * as XLSX from "xlsx/xlsx.mjs";
+
+// Function to convert an image to base64
+function getBase64Image(img: any) {
+  const canvas = document.createElement("canvas");
+  canvas.width = img.width;
+  canvas.height = img.height;
+
+  const ctx = canvas.getContext("2d");
+  ctx.drawImage(img, 0, 0);
+
+  return canvas.toDataURL("image/png");
+}
+
+// Function to download data as a PDF
+const downloadPDF = async (type: string, columns, completeData) => {
+  const pdf = new jsPDF({
+    orientation: "landscape",
+    unit: "pt",
+    format: "a0",
+  });
+
+  const tempInput = document.createElement("table");
+  tempInput.style.borderCollapse = "collapse";
+  tempInput.style.fontSize = "10px";
+  tempInput.style.width = "3300px";
+
+  const headingRow = tempInput.insertRow();
+  headingRow.style.fontWeight = "bold";
+  const idCellHeading = headingRow.insertCell();
+  idCellHeading.textContent = "ID";
+  idCellHeading.style.border = "1px solid #000";
+  idCellHeading.style.padding = "5px";
+  idCellHeading.rowSpan = 2;
+
+  const subHeadingRow = tempInput.insertRow();
+  subHeadingRow.style.fontWeight = "bold";
+
+  columns.forEach((headerText) => {
+    const cell = headingRow.insertCell();
+    cell.textContent = headerText.title;
+    cell.style.border = "1px solid #000";
+    cell.style.padding = "5px";
+    if (headerText.type === "subColumns") {
+      cell.colSpan = headerText.subColumns.length;
+      headerText.subColumns.forEach((subItem) => {
+        const subCell = subHeadingRow.insertCell();
+        subCell.textContent = subItem.title;
+        subCell.style.border = "1px solid #000";
+        subCell.style.padding = "5px";
+      });
+    } else {
+      cell.rowSpan = 2;
+    }
+  });
+
+  completeData.forEach((rowData) => {
+    const row = tempInput.insertRow();
+    const idCell = row.insertCell();
+    idCell.textContent = rowData.id;
+    idCell.style.border = "1px solid #000";
+    idCell.style.padding = "5px";
+    columns.forEach((cellData) => {
+      if (cellData.type === "subColumns") {
+        cellData.subColumns.map((subItem) => {
+          const subCell = row.insertCell();
+          subCell.style.border = "1px solid #000";
+          subCell.style.padding = "5px";
+          subCell.textContent = cellData.isDefault
+            ? rowData[cellData.field][subItem.field]
+            : rowData.additionalFields[cellData.field][subItem.field];
+        });
+      } else {
+        const cell = row.insertCell();
+        cell.style.border = "1px solid #000";
+        cell.style.padding = "5px";
+        cell.textContent = cellData.isDefault ? rowData[cellData.field] : rowData.additionalFields[cellData.field];
+      }
+    });
+  });
+
+  try {
+    await pdf.html(tempInput.outerHTML, {
+      callback: () => {
+        pdf.save(`${type}.pdf`);
+      },
+    });
+  } catch (error) {
+    console.error("Error generating PDF:", error);
+  }
+};
+
+// Function to export data to an Excel file
+const fnExportToExcel = (fn: string, columns, completeData) => {
+  const tempInput = document.createElement("table");
+  const headingRow = tempInput.insertRow();
+  const subHeadingRow = tempInput.insertRow();
+  const idCellHeading = headingRow.insertCell();
+  idCellHeading.textContent = "ID";
+  idCellHeading.rowSpan = 2;
+  columns.forEach((headerText) => {
+    const cell = headingRow.insertCell();
+    cell.textContent = headerText.title;
+    if (headerText.type === "subColumns") {
+      cell.colSpan = headerText.subColumns.length;
+      headerText.subColumns.forEach((subItem) => {
+        const subCell = subHeadingRow.insertCell();
+        subCell.textContent = subItem.title;
+      });
+    } else {
+      cell.rowSpan = 2;
+    }
+  });
+
+  completeData.forEach((rowData) => {
+    const row = tempInput.insertRow();
+    const idCell = row.insertCell();
+    idCell.textContent = rowData.id;
+    columns.forEach((cellData) => {
+      if (cellData.type === "subColumns") {
+        cellData.subColumns.map((subItem) => {
+          const subCell = row.insertCell();
+          subCell.textContent = cellData.isDefault
+            ? rowData[cellData.field][subItem.field]
+            : rowData.additionalFields[cellData.field][subItem.field];
+        });
+      } else {
+        const cell = row.insertCell();
+        cell.textContent = cellData.isDefault ? rowData[cellData.field] : rowData.additionalFields[cellData.field];
+      }
+    });
+  });
+
+  var wb = XLSX.utils.table_to_book(tempInput, { sheet: "sheet1" });
+  XLSX.writeFile(wb, fn + "." + "xlsx");
+};
+
+export { getBase64Image, downloadPDF, fnExportToExcel };
+
+```
+The DisplayTable component renders a data table with sortable columns, PDF and Excel export features, and action buttons for editing and deleting rows based on user authentication. It utilizes jsPDF and XLSX libraries for exporting the table content and next-auth session for user authentication to manage admin features.

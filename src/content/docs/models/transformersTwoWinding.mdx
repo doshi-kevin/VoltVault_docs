@@ -1,0 +1,80 @@
+---
+title: "TransformersTwoWinding Schema"
+description: "This script defines a Mongoose schema for storing two-winding transformers in a database. It includes fields like ID, deviceName, bus connections (primary, secondary), ratings (MVA, kV), impedance parameters (r, x), tap settings, winding connections, phase angle, and additional custom fields. The schema enables real-time change stream monitoring and exports the TransformersTwoWinding model for CRUD operations on MongoDB."
+---
+
+
+In the <Highlight>src/content/docs/models</Highlight> directory, You can find the <Highlight>TransformersTwoWinding.mdx</Highlight>
+
+## Functions
+
+```tsx:transformersTwoWindingSchema
+
+const transformersTwoWindingSchema = new Schema(
+  {
+    id: {
+      type: String,
+    },
+    deviceName: {
+      type: String,
+    },
+    busFrom: {
+      type: String,
+    },
+    busSectionFrom: {
+      type: String,
+    },
+    busTo: {
+      type: String,
+    },
+    busSectionTo: {
+      type: String,
+    },
+    mva: {
+      type: String,
+    },
+    kvprimary: {
+      type: String,
+    },
+    kvsecondary: {
+      type: String,
+    },
+    r: {
+      type: String,
+    },
+    x: {
+      type: String,
+    },
+    TapPrimary: {
+      type: String,
+    },
+    TapSecondary: {
+      type: String,
+    },
+    primaryWindingConnection: {
+      type: String,
+    },
+    primaryConnectionGrounding: {
+      type: String,
+    },
+    secondaryWindingConnection: {
+      type: String,
+    },
+    secondaryConnectionGrounding: {
+      type: String,
+    },
+    angle: {
+      type: String,
+    },
+    additionalFields: {
+      type: Schema.Types.Mixed,
+      default: {},
+    },
+  },
+  {
+    collectionOptions: { changeStreamPreAndPostImages: { enabled: true } },
+  }
+);
+
+```
+This code defines a Mongoose schema for storing information about two-winding transformers. Each document in the collection represents a transformer and includes fields such as ID, deviceName, bus connections for primary and secondary windings, ratings (MVA and kV), impedance parameters (r and x), tap settings, winding connections, phase angle, and additional custom fields. The schema is configured to enable change stream monitoring for real-time updates. The exported model, TransformersTwoWinding, allows interaction with the MongoDB collection for CRUD operations on transformer data.

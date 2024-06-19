@@ -1,0 +1,65 @@
+---
+title: "TransmissionLine Schema"
+description: "This script defines a Mongoose schema for storing transmission lines in a database. It includes fields like ID, deviceName, type, bus connections (both ends), positive and negative sequence impedances, length (km), line reactor details (both ends), and additional custom fields. The schema supports real-time change stream monitoring and exports the TransmissionLine model for CRUD operations on MongoDB."
+---
+
+
+In the <Highlight>src/content/docs/models</Highlight> directory, You can find the <Highlight>TransmissionLine.mdx</Highlight>
+
+## Functions
+
+```tsx:transmissionLineSchema
+
+
+const transmissionLineSchema = new Schema(
+  {
+    id: {
+      type: String,
+    },
+    deviceName: {
+      type: String,
+    },
+    type: {
+      type: String,
+    },
+    busFrom: {
+      type: String,
+    },
+    busSectionFrom: {
+      type: String,
+    },
+    busTo: {
+      type: String,
+    },
+    busSectionTo: {
+      type: String,
+    },
+    positiveSequence: {
+      type: Schema.Types.Mixed,
+      default: {},
+    },
+    negativeSequence: {
+      type: Schema.Types.Mixed,
+      default: {},
+    },
+    lengthKm: {
+      type: String,
+    },
+    lineReactorFrom: {
+      type: String,
+    },
+    lineReactorTo: {
+      type: String,
+    },
+    additionalFields: {
+      type: Schema.Types.Mixed,
+      default: {},
+    },
+  },
+  {
+    collectionOptions: { changeStreamPreAndPostImages: { enabled: true } },
+  }
+);
+
+```
+This code defines a Mongoose schema for representing transmission lines. Each document in the collection corresponds to a transmission line and includes fields such as ID, deviceName, type, bus connections for both ends, positive and negative sequence impedances, length in kilometers, line reactor information for both ends, and additional custom fields. The schema is configured to enable change stream monitoring for real-time updates. The exported model, TransmissionLine, facilitates interaction with the MongoDB collection for CRUD operations on transmission line data.

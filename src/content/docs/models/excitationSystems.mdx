@@ -1,0 +1,58 @@
+---
+title: "Excitation System Schema"
+description: "This JavaScript code defines `excitationSystemSchema`, a Mongoose schema for modeling excitation system data with fields including `deviceName`, `automaticVoltageRegulatorAVRType`, and `images`, accommodating additional custom fields. It includes collection options for real-time change stream monitoring and exports a Mongoose model named `ExcitationSystem` for MongoDB interaction."
+---
+
+
+In the <Highlight>src/content/docs/models</Highlight> directory, You can find the <Highlight>ExcitationSystem.mdx</Highlight>
+
+## Functions
+
+```tsx:excitationSystemSchema
+
+const excitationSystemSchema = new Schema(
+  {
+    id: {
+      type: String,
+    },
+    deviceName: {
+      type: String,
+      required: true,
+    },
+    automaticVoltageRegulatorAVRType: {
+      type: String,
+      required: true,
+    },
+    generatorDeviceName: {
+      type: String,
+      required: true,
+    },
+    avrImage: {
+      type: String,
+      required: true,
+    },
+    powerSystemStabilizerPSSImage: {
+      type: String,
+      required: true,
+    },
+    underExcitationLimiterUELImage: {
+      type: String,
+      required: true,
+    },
+    overExcitationLimiterOELImage: {
+      type: String,
+      required: true,
+    },
+    additionalFields: {
+      type: Schema.Types.Mixed,
+      default: {},
+    },
+  },
+  {
+    collectionOptions: { changeStreamPreAndPostImages: { enabled: true } },
+  }
+);
+
+```
+
+This JavaScript code defines a Mongoose schema named excitationSystemSchema to model data for an excitation system. It includes fields like deviceName, automaticVoltageRegulatorAVRType, and images for various components. The schema also allows for additional custom fields. Additionally, it sets up collection options for real-time change stream monitoring. Finally, it exports a Mongoose model called ExcitationSystem based on the defined schema for interaction with MongoDB.

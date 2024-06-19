@@ -1,0 +1,109 @@
+---
+title: "TurbineGovernor Actions"
+description: "
+This file contains functions to interact with a database for managing TurbineGovernors. It provides functionalities such as retrieving TurbineGovernors with pagination and search, creating, updating, and deleting individual TurbineGovernors, as well as uploading data from Excel files. Additionally, it maintains a modification history for tracking changes made to TurbineGovernors."
+---
+
+In the <Highlight>src/lib/actions</Highlight> directory, You can find the <Highlight>TurbineGovernor.actions.ts</Highlight>
+
+## Functions
+
+```tsx:getAllTurbineGovernors
+
+export const getAllTurbineGovernors = async (
+  limit = 10,
+  page = 1,
+  query = "",
+  columns: IColumn[]
+): Promise<{
+  data: ITurbineGovernor[];
+  status: number;
+  totalPages: number;
+  totalDocuments: number;
+  completeData: ITurbineGovernor[];
+}> => {
+  try {
+    await connectToDatabase();
+    // Implementation code to retrieve TurbineGovernors based on parameters
+  } catch (error) {
+    throw new Error(typeof error === "string" ? error : JSON.stringify(error));
+  }
+};
+
+```
+This function retrieves TurbineGovernors from the database based on specified criteria such as pagination, search query, and columns to display. It returns paginated results along with total counts and complete data matching the query.
+
+```tsx:createTurbineGovernor
+
+export const createTurbineGovernor = async (req: ICreateUpdateParams, userId: string) => {
+  const { defaultFields, additionalFields } = req;
+  try {
+    await connectToDatabase();
+    // Implementation code to create a new TurbineGovernor
+  } catch (error) {
+    throw new Error(typeof error === "string" ? error : JSON.stringify(error));
+  }
+};
+ 
+
+```
+This function creates a new TurbineGovernor in the database using the provided parameters, including default and additional fields. It logs the creation of the new record in the modification history and returns the newly created TurbineGovernor.
+
+```tsx:getTurbineGovernorById
+
+export const getTurbineGovernorById = async (id: string) => {
+  try {
+    await connectToDatabase();
+    // Implementation code to retrieve a TurbineGovernor by its ID
+  } catch (error) {
+    throw new Error(typeof error === "string" ? error : JSON.stringify(error));
+  }
+};
+
+
+```
+This function fetches a specific TurbineGovernor from the database by its unique ID. If the TurbineGovernor exists, it returns its details; otherwise, it returns a "not found" message.
+
+```tsx:updateTurbineGovernor
+
+export const updateTurbineGovernor = async (req: ICreateUpdateParams, id: string, userId: string) => {
+  const { defaultFields, additionalFields } = req;
+  try {
+    await connectToDatabase();
+    // Implementation code to update a TurbineGovernor
+  } catch (error) {
+    throw new Error(typeof error === "string" ? error : JSON.stringify(error));
+  }
+};
+
+```
+
+This function updates an existing TurbineGovernor in the database based on the provided parameters. It logs the changes made to the TurbineGovernor in the modification history and returns the updated TurbineGovernor.
+
+```tsx:deleteTurbineGovernor
+
+export const deleteTurbineGovernor = async (id: string, path: string, userId: string) => {
+  try {
+    await connectToDatabase();
+    // Implementation code to delete a TurbineGovernor
+  } catch (error) {
+    throw new Error(typeof error === "string" ? error : JSON.stringify(error));
+  }
+};
+
+```
+This function deletes a TurbineGovernor from the database by its ID. It also logs the deletion in the modification history and revalidates the specified path, presumably for cache invalidation.
+
+```tsx:uploadTurbineGovernorFromExcel
+
+export const uploadTurbineGovernorFromExcel = async (data: any, userId: string) => {
+  try {
+    await connectToDatabase();
+    // Implementation code to upload TurbineGovernors from an Excel file
+  } catch (error) {
+    throw new Error(typeof error === "string" ? error : JSON.stringify(error));
+  }
+};
+
+```
+This function uploads TurbineGovernors from an Excel file into the database. It inserts the data from the file into the TurbineGovernor collection and logs the upload in the modification history.

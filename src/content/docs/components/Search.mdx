@@ -1,0 +1,71 @@
+---
+title: "Search"
+description: "`Search` component provides a dynamic search input with URL query parameter synchronization. It allows users to enter queries, updates the URL based on input changes, and supports clearing the search query with a close button.
+"
+---
+
+In the <Highlight>src/content/docs/component</Highlight> directory, You can find the <Highlight>search.mdx</Highlight>
+
+## Functions
+
+```tsx:search
+
+const Search = ({ placeholder = "Search ..." }: { placeholder?: string }) => {
+  const [query, setQuery] = useState("");
+
+  const router = useRouter();
+  const searchParams = useSearchParams();
+
+  useEffect(() => {
+    const delayDebounceFn = setTimeout(() => {
+      let newUrl = "";
+      if (query) {
+        newUrl = formUrlQuery({
+          params: searchParams.toString(),
+          key: "query",
+          value: query,
+        });
+      } else {
+        newUrl = removeKeysFromQuery({
+          params: searchParams.toString(),
+          keysToRemove: ["query"],
+        });
+      }
+
+      router.push(newUrl, { scroll: false });
+    }, 300);
+
+    return () => clearTimeout(delayDebounceFn);
+  }, [query, searchParams, router]);
+
+  return (
+    <div className="flex justify-center items-center h-15 w-full overflow-hidden rounded-full bg-gray-100 px-4 py-1">
+      <Image
+        src="/assets/icons/search.svg"
+        alt="search"
+        width={24}
+        height={24}
+      />
+      <Input
+        type="text"
+        value={query}
+        placeholder={placeholder}
+        onChange={(e) => setQuery(e.target.value)}
+        className="border-0 bg-gray-100 outline-offset-0 placeholder:text-grey-500 focus:border-0 focus-visible:ring-0 focus-visible:ring-offset-0 text-base"
+      />
+      {query && (
+        <div
+          className="cursor-pointer hover:bg-gray-300 p-1 text-xl rounded-full"
+          onClick={() => setQuery("")}
+        >
+          <IoCloseOutline />
+        </div>
+      )}
+    </div>
+  );
+};
+
+export default Search;
+
+```
+The Search component allows users to input a search query. It includes a search input field with a placeholder text. As the user types, the component updates the URL query parameters accordingly using the useSearchParams hook and the router's push method, enabling dynamic search functionality. If the user clears the input field, a close icon appears, allowing them to clear the search query.

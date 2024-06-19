@@ -1,0 +1,109 @@
+---
+title: "VSCHVDCLink Actions"
+description: "
+This file contains functions to interact with a database for managing VSCHVDCLinks. It provides functionalities such as retrieving VSCHVDCLinks with pagination and search, creating, updating, and deleting individual VSCHVDCLinks, as well as uploading data from Excel files. Additionally, it maintains a modification history for tracking changes made to VSCHVDCLinks."
+---
+
+In the <Highlight>src/lib/actions</Highlight> directory, You can find the <Highlight>VSCHVDCLink.actions.ts</Highlight>
+
+## Functions
+
+```tsx:getAllVSCHVDCLinks
+
+export const getAllVSCHVDCLinks = async (
+  limit = 10,
+  page = 1,
+  query = "",
+  columns: IColumn[]
+): Promise<{
+  data: IVSCHVDCLink[];
+  status: number;
+  totalPages: number;
+  totalDocuments: number;
+  completeData: IVSCHVDCLink[];
+}> => {
+  try {
+    await connectToDatabase();
+    // Implementation code to retrieve VSCHVDCLinks based on parameters
+  } catch (error) {
+    throw new Error(typeof error === "string" ? error : JSON.stringify(error));
+  }
+};
+
+```
+This function retrieves VSCHVDCLinks from the database based on specified criteria such as pagination, search query, and columns to display. It returns paginated results along with total counts and complete data matching the query.
+
+```tsx:createVSCHVDCLink
+
+export const createVSCHVDCLink = async (req: ICreateUpdateParams, userId: string) => {
+  const { defaultFields, additionalFields } = req;
+  try {
+    await connectToDatabase();
+    // Implementation code to create a new VSCHVDCLink
+  } catch (error) {
+    throw new Error(typeof error === "string" ? error : JSON.stringify(error));
+  }
+};
+ 
+
+```
+This function creates a new VSCHVDCLink in the database using the provided parameters, including default and additional fields. It logs the creation of the new record in the modification history and returns the newly created VSCHVDCLink.
+
+```tsx:getVSCHVDCLinkById
+
+export const getVSCHVDCLinkById = async (id: string) => {
+  try {
+    await connectToDatabase();
+    // Implementation code to retrieve a VSCHVDCLink by its ID
+  } catch (error) {
+    throw new Error(typeof error === "string" ? error : JSON.stringify(error));
+  }
+};
+
+
+```
+This function fetches a specific VSCHVDCLink from the database by its unique ID. If the VSCHVDCLink exists, it returns its details; otherwise, it returns a "not found" message.
+
+```tsx:updateVSCHVDCLink
+
+export const updateVSCHVDCLink = async (req: ICreateUpdateParams, id: string, userId: string) => {
+  const { defaultFields, additionalFields } = req;
+  try {
+    await connectToDatabase();
+    // Implementation code to update a VSCHVDCLink
+  } catch (error) {
+    throw new Error(typeof error === "string" ? error : JSON.stringify(error));
+  }
+};
+
+```
+
+This function updates an existing VSCHVDCLink in the database based on the provided parameters. It logs the changes made to the VSCHVDCLink in the modification history and returns the updated VSCHVDCLink.
+
+```tsx:deleteVSCHVDCLink
+
+export const deleteVSCHVDCLink = async (id: string, path: string, userId: string) => {
+  try {
+    await connectToDatabase();
+    // Implementation code to delete a VSCHVDCLink
+  } catch (error) {
+    throw new Error(typeof error === "string" ? error : JSON.stringify(error));
+  }
+};
+
+```
+This function deletes a VSCHVDCLink from the database by its ID. It also logs the deletion in the modification history and revalidates the specified path, presumably for cache invalidation.
+
+```tsx:uploadVSCHVDCLinkFromExcel
+
+export const uploadVSCHVDCLinkFromExcel = async (data: any, userId: string) => {
+  try {
+    await connectToDatabase();
+    // Implementation code to upload VSCHVDCLinks from an Excel file
+  } catch (error) {
+    throw new Error(typeof error === "string" ? error : JSON.stringify(error));
+  }
+};
+
+```
+This function uploads VSCHVDCLinks from an Excel file into the database. It inserts the data from the file into the VSCHVDCLink collection and logs the upload in the modification history.

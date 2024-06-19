@@ -1,0 +1,25 @@
+---
+title: "defaultParam Schema"
+description: "This code defines a Mongoose schema `defaultParamSchema` for managing column sets of system components, each defined by attributes like field name, title, type, and default status. It includes configuration for real-time change stream monitoring in the collection options."
+---
+
+
+In the <Highlight>src/content/docs/models</Highlight> directory, You can find the <Highlight>defaultParam.mdx</Highlight>
+
+## Functions
+
+```tsx:defaultParamSchema
+
+const defaultParamSchema = new Schema(
+  {
+    busColumns: [{ field: convertField("Bus Name"), title: "Bus Name", type: "text", isDefault: true }, /* More fields */],
+    excitationSystemColumns: [{ field: convertField("Device name"), title: "Device name", type: "text", isDefault: true }, /* More fields */],
+    generatorColumns: [{ field: convertField("Device name"), title: "Device name", type: "text", isDefault: true }, /* More fields */],
+    /* Repeat for other columns */
+  },
+  { collectionOptions: { changeStreamPreAndPostImages: { enabled: true } } }
+);
+
+```
+
+This code creates a Mongoose schema called defaultParamSchema to manage different sets of columns for system components. Each column set is an array of objects defining attributes like field name, title, type, and default status. Additionally, it configures collection options for real-time change stream monitoring.

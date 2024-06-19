@@ -1,0 +1,122 @@
+---
+title: "Bus Actions"
+description: "This file contains functions to perform CRUD operations on bus records in a database, including retrieval, creation, updating, deletion, and bulk insertion, while also maintaining a modification history for auditing purposes."
+---
+
+In the <Highlight>src/lib/actions</Highlight> directory, You can find the <Highlight>bus.actions.ts</Highlight>
+
+## Functions
+
+```tsx:getAllBuses
+
+export const getAllBuses = async (
+  limit = 10,
+  page = 1,
+  query = "",
+  columns: IColumn[]
+): Promise<{ data: IBus[]; status: number; totalPages: number; totalDocuments: number; completeData: IBus[] }> => {
+  try {
+    await connectToDatabase();
+    // Construct search conditions based on query and columns
+    // Perform search and pagination
+    // Return paginated bus data along with metadata
+  } catch (error) {
+    throw new Error(typeof error === "string" ? error : JSON.stringify(error));
+  }
+};
+
+
+```
+
+This function retrieves a list of buses from the database. It allows for optional parameters like limit, page, and query for pagination and filtering. It constructs search conditions based on the provided query and columns. Then, it performs the search, paginates the results, and returns the data along with metadata such as total documents and total pages.
+
+```tsx:createBus
+
+export const createBus = async (req: ICreateUpdateParams, userId: string) => {
+  try {
+    await connectToDatabase();
+    // Create a new bus document based on the request
+    // Save the new bus document
+    // Record this action in the modification history
+    // Return the created bus data
+  } catch (error) {
+    throw new Error(typeof error === "string" ? error : JSON.stringify(error));
+  }
+};
+
+
+
+```
+This function creates a new bus record in the database. It receives a request object containing default and additional fields for the new bus, along with the user ID performing the action. It connects to the database, creates a new bus document, saves it, records this action in the modification history, and finally returns the created bus data.
+
+```tsx:getBusById
+
+export const getBusById = async (id: string) => {
+  try {
+    await connectToDatabase();
+    // Find the bus document by its ID
+    // If found, return its details; otherwise, return "Bus not found"
+  } catch (error) {
+    throw new Error(typeof error === "string" ? error : JSON.stringify(error));
+  }
+};
+
+
+```
+
+This function retrieves details of a bus by its ID. It connects to the database, finds the bus document by its ID, and returns its details if found. If the bus is not found, it returns a "Bus not found" message.
+
+```tsx:updateBus
+
+export const updateBus = async (req: ICreateUpdateParams, id: string, userId: string) => {
+  try {
+    await connectToDatabase();
+    // Find the bus document by its ID
+    // Update its fields based on the request
+    // Record this update action in the modification history
+    // Return the updated bus data
+  } catch (error) {
+    throw new Error(typeof error === "string" ? error : JSON.stringify(error));
+  }
+};
+
+
+
+```
+
+This function updates an existing bus record in the database. It receives a request object containing fields to update, the ID of the bus to update, and the user ID performing the action. It connects to the database, finds the bus document by its ID, updates its fields, records this action in the modification history, and finally returns the updated bus data.
+
+```tsx:deleteBus
+
+export const deleteBus = async (id: string, path: string, userId: string) => {
+  try {
+    await connectToDatabase();
+    // Find the bus document by its ID and delete it
+    // Record this deletion action in the modification history
+    // Revalidate a specified path, possibly related to caching mechanisms
+  } catch (error) {
+    throw new Error(typeof error === "string" ? error : JSON.stringify(error));
+  }
+};
+
+
+```
+This function deletes a bus record from the database. It receives the ID of the bus to delete, a path, possibly related to caching mechanisms, and the user ID performing the action. It connects to the database, finds the bus document by its ID, deletes it, records this deletion action in the modification history, and possibly revalidates the specified path.
+
+```tsx:uploadBusFromExcel
+
+export const uploadBusFromExcel = async (data: any, userId: string) => {
+  try {
+    await connectToDatabase();
+    // Insert bus records from Excel data into the database
+    // Record this bulk insertion action in the modification history
+    // Return a success message
+  } catch (error) {
+    throw new Error(typeof error === "string" ? error : JSON.stringify(error));
+  }
+};
+
+
+
+```
+This function uploads bus records from an Excel file into the database. It receives data containing bus records and the user ID performing the action. It connects to the database, inserts the provided data into the Bus collection, records this bulk insertion action in the modification history, and returns a success message.

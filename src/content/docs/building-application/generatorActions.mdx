@@ -1,0 +1,131 @@
+---
+title: "Generator Actions"
+description: "Each function in this file manages generator records, including retrieval, creation, updating, and deletion, providing essential functionalities for managing data related to generators."
+---
+
+In the <Highlight>src/lib/actions</Highlight> directory, You can find the <Highlight>generator.actions.ts</Highlight>
+
+## Functions
+
+```tsx:getAllGenerators
+
+export const getAllGenerators = async (
+  limit = 10,
+  page = 1,
+  query = "",
+  columns: IColumn[]
+): Promise<{
+  data: IGenerator[];
+  status: number;
+  totalPages: number;
+  totalDocuments: number;
+  completeData: IGenerator[];
+}> => {
+  try {
+    await connectToDatabase();
+    // Construct search conditions based on query and columns
+    // Perform search and pagination
+    // Return paginated generator data along with metadata
+  } catch (error) {
+    throw new Error(typeof error === "string" ? error : JSON.stringify(error));
+  }
+};
+
+```
+This function retrieves a list of generators from the database. It accepts parameters for filtering, pagination, and search. It constructs search conditions based on the provided query and columns, performs the search, paginates the results, and returns the data along with metadata such as total documents and total pages.
+
+```tsx:createGenerator
+
+export const createGenerator = async (
+  req: ICreateUpdateParams,
+  userId: string
+) => {
+  const { defaultFields, additionalFields } = req;
+  try {
+    await connectToDatabase();
+    // Create a new generator document based on the request
+    // Save the new generator document
+    // Record this action in the modification history
+    // Return the created generator data
+  } catch (error) {
+    throw new Error(typeof error === "string" ? error : JSON.stringify(error));
+  }
+}; 
+
+```
+This function creates a new generator record in the database. It receives a request object containing default and additional fields for the new generator, along with the user ID performing the action. It connects to the database, creates a new generator document, saves it, records this action in the modification history, and finally returns the created generator data.
+
+```tsx:getGeneratorById
+
+export const getGeneratorById = async (id: string) => {
+  try {
+    await connectToDatabase();
+    // Find the generator document by its ID
+    // If found, return its details; otherwise, return "Generator not found"
+  } catch (error) {
+    throw new Error(typeof error === "string" ? error : JSON.stringify(error));
+  }
+};
+
+```
+This function retrieves details of a generator by its ID. It connects to the database, finds the generator document by its ID, and returns its details if found. If the generator is not found, it returns a "Generator not found" message.
+
+```tsx:updateGenerator
+
+export const updateGenerator = async (
+  req: ICreateUpdateParams,
+  id: string,
+  userId: string
+) => {
+  const { defaultFields, additionalFields } = req;
+  try {
+    await connectToDatabase();
+    // Find the generator document by its ID and update its fields based on the request
+    // Record this update action in the modification history
+    // Return the updated generator data
+  } catch (error) {
+    throw new Error(typeof error === "string" ? error : JSON.stringify(error));
+  }
+};
+
+
+```
+
+This function updates an existing generator record in the database. It receives a request object containing fields to update, the ID of the generator to update, and the user ID performing the action. It connects to the database, finds the generator document by its ID, updates its fields, records this action in the modification history, and finally returns the updated generator data.
+
+```tsx:deleteGenerator
+
+export const deleteGenerator = async (
+  id: string,
+  path: string,
+  userId: string
+) => {
+  try {
+    await connectToDatabase();
+    // Find the generator document by its ID and delete it
+    // Record this deletion action in the modification history
+    // Revalidate a specified path, possibly related to caching mechanisms
+  } catch (error) {
+    throw new Error(typeof error === "string" ? error : JSON.stringify(error));
+  }
+};
+
+```
+This function deletes a generator record from the database. It receives the ID of the generator to delete, a path, possibly related to caching mechanisms, and the user ID performing the action. It connects to the database, finds the generator document by its ID, deletes it, records this deletion action in the modification history, and possibly revalidates the specified path
+
+```tsx:uploadGeneratorFromExcel
+
+export const uploadGeneratorFromExcel = async (data: any, userId: string) => {
+  try {
+    await connectToDatabase();
+    // Insert generator records from Excel data into the database
+    // Record this bulk insertion action in the modification history
+    // Return a success message
+  } catch (error) {
+    throw new Error(typeof error === "string" ? error : JSON.stringify(error));
+  }
+};
+
+
+```
+This function uploads generator records from an Excel file into the database. It receives data containing generator records and the user ID performing the action. It connects to the database, inserts the provided data into the Generator collection, records this bulk insertion action in the modification history, and returns a success message.

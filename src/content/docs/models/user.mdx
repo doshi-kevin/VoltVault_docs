@@ -1,0 +1,44 @@
+---
+title: "User Schema"
+description: "This script defines a Mongoose schema for user data, featuring fields like ID, name, email, password, isAdmin for admin status, and image. It includes timestamps for creation and updates, supports change stream monitoring for real-time updates, and exports a User model for CRUD operations on MongoDB user data."
+---
+
+
+In the <Highlight>src/content/docs/models</Highlight> directory, You can find the <Highlight>User.mdx</Highlight>
+
+## Functions
+
+```tsx:UserSchema
+
+const UserSchema = new Schema(
+  {
+    id: {
+      type: String,
+    },
+    name: {
+      type: String,
+      default: "Anonymous",
+      required: true,
+    },
+    email: {
+      type: String,
+      required: true,
+      unique: true,
+    },
+    password: {
+      type: String,
+    },
+    isAdmin: {
+      type: Boolean,
+      default: false,
+    },
+    image: {
+      type: String,
+    },
+  },
+  { timestamps: true, collectionOptions: { changeStreamPreAndPostImages: { enabled: true } } }
+);
+
+
+```
+This script defines a Mongoose schema for user data, including fields such as ID, name, email, password, isAdmin (indicating admin status), and image. The schema is configured to include timestamps for creation and update times and enables change stream monitoring for real-time updates. The exported model, User, allows interaction with the MongoDB collection, facilitating CRUD operations on user data.

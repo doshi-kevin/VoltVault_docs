@@ -1,0 +1,221 @@
+---
+title: "CreateForm"
+description: "This file defines a `CreateForm` component that manages a dynamic form with various field types, handling image uploads, form submissions, and updates or creations of different entity types based on the provided `type` prop. It leverages React state, form handling with Zod schema validation, and API calls to perform the required operations, including error handling and user feedback."
+---
+
+In the <Highlight>src/content/docs/component</Highlight> directory, You can find the <Highlight>CreateForm.mdx</Highlight>
+
+## Functions
+
+```tsx:CreateForm
+
+const CreateForm = ({ formFields, formDetails, type }: CreateFormProps) => {
+  const [files, setFiles] = useState<IFiles[]>([]);
+  const [isLoading, setIsLoading] = useState(false);
+  const { data: session } = useSession();
+  const router = useRouter();
+
+  const FormSchema = generateFormSchema(formFields);
+
+  const form = useForm<z.infer<typeof FormSchema>>({
+    resolver: zodResolver(FormSchema),
+    defaultValues: formDetails,
+  });
+
+  const onSubmit = async (data: z.infer<typeof FormSchema>) => {
+    setIsLoading(true);
+    let uploadedImageUrl: any = {};
+    formFields.map((item) => {
+      if (item.type === "image") {
+        uploadedImageUrl[item.field] = data[item.field];
+      } else if (item.type === "subColumns") {
+        item.subColumns!.map((subItem) => {
+          if (subItem.type === "image") uploadedImageUrl[subItem.field] = data[subItem.field];
+        });
+      }
+    });
+
+    if (files.length > 0) {
+      const images = await uploadImagesToFirebase(files);
+      images.map((image: any) => {
+        data[image.field] = image.url;
+      });
+    }
+
+    const defaultFields: any = {};
+    const additionalFields: any = {};
+    formFields.map((item) => {
+      if (item.isDefault) {
+        if (item.type === "subColumns") {
+          const temp: any = {};
+          item.subColumns!.map((subItem) => {
+            temp[subItem.field] = data[subItem.field];
+          });
+          defaultFields[item.field] = temp;
+        } else defaultFields[item.field] = data[item.field];
+      } else {
+        if (item.type === "subColumns") {
+          const temp: any = {};
+          item.subColumns!.map((subItem) => {
+            temp[subItem.field] = data[subItem.field];
+          });
+          additionalFields[item.field] = temp;
+        } else additionalFields[item.field] = data[item.field];
+      }
+    });
+
+    try {
+      let response;
+      let req = {
+        defaultFields: defaultFields,
+        additionalFields: additionalFields,
+      };
+
+      if (formDetails) {
+        switch (type) {
+          case "bus":
+            response = await updateBus(req, formDetails._id, session?.user.id!);
+            break;
+          case "excitationSystem":
+            response = await updateExcitationSystem(req, formDetails._id, session?.user.id!);
+            break;
+          case "generator":
+            response = await updateGenerator(req, formDetails._id, session?.user.id!);
+            break;
+          case "load":
+            response = await updateLoad(req, formDetails._id, session?.user.id!);
+            break;
+          case "seriesCapacitor":
+            response = await updateSeriesCapacitor(req, formDetails._id, session?.user.id!);
+            break;
+          case "shuntCapacitor":
+            response = await updateShuntCapacitor(req, formDetails._id, session?.user.id!);
+            break;
+          case "shuntReactor":
+            response = await updateShuntReactor(req, formDetails._id, session?.user.id!);
+            break;
+          case "singleLineDiagram":
+            response = await updateSingleLineDiagram(req, formDetails._id, session?.user.id!);
+            break;
+          case "transformersThreeWinding":
+            response = await updateTransformersThreeWinding(req, formDetails._id, session?.user.id!);
+            break;
+          case "transformersTwoWinding":
+            response = await updateTransformersTwoWinding(req, formDetails._id, session?.user.id!);
+            break;
+          case "transmissionLine":
+            response = await updateTransmissionLine(req, formDetails._id, session?.user.id!);
+            break;
+          case "turbineGovernor":
+            response = await updateTurbineGovernor(req, formDetails._id, session?.user.id!);
+            break;
+          case "ibr":
+            response = await updateIBR(req, formDetails._id, session?.user.id!);
+            break;
+          case "lccHvdcLink":
+            response = await updateLCCHVDCLink(req, formDetails._id, session?.user.id!);
+            break;
+          case "seriesFact":
+            response = await updateSeriesFact(req, formDetails._id, session?.user.id!);
+            break;
+          case "shuntFact":
+            response = await updateShuntFact(req, formDetails._id, session?.user.id!);
+            break;
+          case "vscHvdcLink":
+            response = await updateVSCHVDCLink(req, formDetails._id, session?.user.id!);
+            break;
+          default:
+            break;
+        }
+      } else {
+        switch (type) {
+          case "bus":
+            response = await createBus(req, session?.user.id!);
+            break;
+          case "excitationSystem":
+            response = await createExcitationSystem(req, session?.user.id!);
+            break;
+          case "generator":
+            response = await createGenerator(req, session?.user.id!);
+            break;
+          case "load":
+            response = await createLoad(req, session?.user.id!);
+            break;
+          case "seriesCapacitor":
+            response = await createSeriesCapacitor(req, session?.user.id!);
+            break;
+          case "shuntCapacitor":
+            response = await createShuntCapacitor(req, session?.user.id!);
+            break;
+          case "shuntReactor":
+            response = await createShuntReactor(req, session?.user.id!);
+            break;
+          case "singleLineDiagram":
+            response = await createSingleLineDiagram(req, session?.user.id!);
+            break;
+          case "transformersThreeWinding":
+            response = await createTransformersThreeWinding(req, session?.user.id!);
+            break;
+          case "transformersTwoWinding":
+            response = await createTransformersTwoWinding(req, session?.user.id!);
+            break;
+          case "transmissionLine":
+            response = await createTransmissionLine(req, session?.user.id!);
+            break;
+          case "turbineGovernor":
+            response = await createTurbineGovernor(req, session?.user.id!);
+            break;
+          case "ibr":
+            response = await createIBR(req, session?.user.id!);
+            break;
+          case "lccHvdcLink":
+            response = await createLCCHVDCLink(req, session?.user.id!);
+            break;
+          case "seriesFact":
+            response = await createSeriesFact(req, session?.user.id!);
+            break;
+          case "shuntFact":
+            response = await createShuntFact(req, session?.user.id!);
+            break;
+          case "vscHvdcLink":
+            response = await createVSCHVDCLink(req, session?.user.id!);
+            break;
+          default:
+            break;
+        }
+      }
+
+      if (response?.status === 200) {
+        router.push(`/${type}`);
+        router.refresh();
+        toast.success(
+          formDetails
+            ? `${reverseUnslug(type)} edited successfully`
+            : `New ${reverseUnslug(type).toLowerCase()} created successfully`
+        );
+      }
+    } catch (error) {
+      console.log(error);
+    }
+    setIsLoading(false);
+  };
+
+  return (
+    <Form {...form}>
+      <form onSubmit={form.handleSubmit(onSubmit)} className="flex flex-col gap-5 justify-between pr-5 h-full overflow-hidden p-4">
+        <div className="flex flex-col gap-5">
+          <div className="grid grid-cols-2 gap-5 max-h-[75vh] overflow-auto">
+            {formFields.map((item, ind: number) => {
+              if (item.type === "text" || item.type === "number")
+                return (
+                  <FormField key={ind} control={form.control} name={item?.field} render={({ field }) => (
+                    <FormItem className="h-fit">
+                      <FormLabel>{item?.title}</FormLabel>
+                      <FormControl>
+                        <Input placeholder={item?.title} {...field} type={item.type}
+                          className="focus-visible:ring-offset-0 focus-visible:ring-transparent focus:shadow-blue-500 focus:shadow-[0px_2px_20px_-10px_rgba(0,0,0,0.75)] focus:border-blue-500 focus:outline-none" />
+                      </FormControl
+
+```
+The CreateForm component dynamically generates a form based on the provided configuration (formFields). It supports various input types including text, number, dropdown, and image uploads, and handles form submission for both creating and updating records in the database.
+

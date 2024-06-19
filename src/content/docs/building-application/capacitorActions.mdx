@@ -1,0 +1,107 @@
+---
+title: "Seies Capacitor Actions"
+description: "
+This file contains functions to manage series capacitors in a database. It includes functions to retrieve all series capacitors, create a new series capacitor record, retrieve a series capacitor by its ID, update an existing series capacitor, delete a series capacitor, and upload series capacitors from an Excel file. Each function interacts with the database, performs the specified operation, and handles any errors that may occur during the process."
+---
+
+In the <Highlight>src/lib/actions</Highlight> directory, You can find the <Highlight>generator.actions.ts</Highlight>
+
+## Functions
+
+```tsx:getAllSeriesCapacitors
+
+export const getAllSeriesCapacitors = async (
+  limit = 10,
+  page = 1,
+  query = "",
+  columns: IColumn[]
+): Promise<{
+  data: ISeriesCapacitor[];
+  status: number;
+  totalPages: number;
+  totalDocuments: number;
+  completeData: ISeriesCapacitor[];
+}> => {
+  try {
+    await connectToDatabase();
+    // Implementation code to retrieve series capacitors based on parameters
+  } catch (error) {
+    throw new Error(typeof error === "string" ? error : JSON.stringify(error));
+  }
+};
+
+```
+The getAllSeriesCapacitors function retrieves a list of series capacitors from the database based on specified parameters such as the limit of results per page, the page number, a search query, and columns to search in. It connects to the database, constructs search conditions based on the query and columns provided, fetches series capacitors accordingly, and returns the result along with metadata like total documents and total pages.
+
+```tsx:createSeriesCapacitor
+
+export const createSeriesCapacitor = async (req: ICreateUpdateParams, userId: string) => {
+  const { defaultFields, additionalFields } = req;
+  try {
+    await connectToDatabase();
+    // Implementation code to create a new series capacitor record
+  } catch (error) {
+    throw new Error(typeof error === "string" ? error : JSON.stringify(error));
+  }
+}; 
+
+```
+The createSeriesCapacitor function adds a new series capacitor record to the database. It receives the request body (req) containing the data for the new series capacitor record and the userId of the user performing the operation. After connecting to the database, it creates a new series capacitor record using the provided data, logs the creation in the modification history, and returns the newly created record.
+
+```tsx:getSeriesCapacitorById
+
+export const getSeriesCapacitorById = async (id: string) => {
+  try {
+    await connectToDatabase();
+    // Implementation code to retrieve series capacitor details by ID
+  } catch (error) {
+    throw new Error(typeof error === "string" ? error : JSON.stringify(error));
+  }
+};
+
+```
+This function retrieves details of a specific series capacitor record from the database based on the provided ID. It connects to the database, queries for the series capacitor record with the given ID, and returns the details if found, otherwise returns a 404 error.
+
+```tsx:updateSeriesCapacitor
+
+export const updateSeriesCapacitor = async (req: ICreateUpdateParams, id: string, userId: string) => {
+  const { defaultFields, additionalFields } = req;
+  try {
+    await connectToDatabase();
+    // Implementation code to update an existing series capacitor record
+  } catch (error) {
+    throw new Error(typeof error === "string" ? error : JSON.stringify(error));
+  }
+};
+
+```
+
+The purpose of this function is to update an existing series capacitor record in the database with new data. It receives the request body containing the updated data, the ID of the series capacitor record to be updated, and the user ID of the operator. After connecting to the database, it updates the specified series capacitor record with the new data, logs the update in the modification history, and returns the updated record.
+
+```tsx:deleteSeriesCapacitor
+
+export const deleteSeriesCapacitor = async (id: string, path: string, userId: string) => {
+  try {
+    await connectToDatabase();
+    // Implementation code to delete a series capacitor record
+  } catch (error) {
+    throw new Error(typeof error === "string" ? error : JSON.stringify(error));
+  }
+};
+
+```
+This function deletes a series capacitor record from the database based on the provided ID. It connects to the database, deletes the series capacitor record with the given ID, logs the deletion in the modification history, and triggers a revalidation of the specified path if the deletion is successful.
+
+```tsx:uploadSeriesCapacitorFromExcel
+
+export const uploadSeriesCapacitorFromExcel = async (data: any, userId: string) => {
+  try {
+    await connectToDatabase();
+    // Implementation code to upload series capacitors from Excel
+  } catch (error) {
+    throw new Error(typeof error === "string" ? error : JSON.stringify(error));
+  }
+};
+
+```
+The purpose of this function is to insert multiple series capacitor records into the database from an Excel file. It receives the data containing series capacitor records extracted from the Excel file and the user ID of the operator. After connecting to the database, it inserts the series capacitor records from the provided data, logs the operation in the modification history, and returns a success message.

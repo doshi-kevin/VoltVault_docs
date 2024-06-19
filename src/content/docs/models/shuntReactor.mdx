@@ -1,0 +1,44 @@
+---
+title: "Shunt Reactor Schema"
+description: "This script defines a Mongoose schema for shunt reactors in a database, featuring fields like ID, device name, bus details, kv, and mva. It supports mixed data type fields, enables real-time change stream monitoring, and exports the ShuntReactor model for CRUD operations on MongoDB."
+---
+
+
+In the <Highlight>src/content/docs/models</Highlight> directory, You can find the <Highlight>ShuntReactor.mdx</Highlight>
+
+## Functions
+
+```tsx:shuntReactorSchema
+
+const shuntReactorSchema = new Schema(
+  {
+    id: {
+      type: String,
+    },
+    deviceName: {
+      type: String,
+    },
+    busFrom: {
+      type: String,
+    },
+    busSectionFrom: {
+      type: String,
+    },
+    kv: {
+      type: String,
+    },
+    mva: {
+      type: String,
+    },
+    additionalFields: {
+      type: Schema.Types.Mixed,
+      default: {},
+    },
+  },
+  {
+    collectionOptions: { changeStreamPreAndPostImages: { enabled: true } },
+  }
+);
+
+```
+This code defines a Mongoose schema for representing shunt reactors in a database. It includes fields such as ID, device name, bus from, bus section from, kilovolts (kv), and megavolt-amperes (mva). Additionally, it allows for additional custom fields stored as mixed data types. The schema enables change stream monitoring for real-time updates. The exported model, ShuntReactor, provides an interface for CRUD operations on the MongoDB collection containing shunt reactor data.

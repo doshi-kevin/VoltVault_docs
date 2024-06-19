@@ -1,0 +1,35 @@
+---
+title: "Nothing to Display"
+description: "`NothingToDisplay` component renders a message and an action prompt when no columns are present in a table. It encourages adding columns using the `AddColumns` component, tailored for the user identified by `userId`."
+---
+
+In the <Highlight>src/content/docs/component</Highlight> directory, You can find the <Highlight>NothingToDisplay.mdx</Highlight>
+
+## Functions
+
+```tsx:NothingToDisplay
+
+const NothingToDisplay = ({ userId }: { userId: string }) => {
+  return (
+    <div className="flex w-full h-[80vh] justify-center items-center">
+      <div className="flex flex-col items-center">
+        <TbTableOff className="text-gray-400 text-[10rem] mb-3" />
+        <p className="text-gray-400 text-xl mb-5">Nothing to display here since this table does not have any columns</p>
+        <div className="flex items-center">
+          <p className="-mr-2 text-gray-400 text-lg">To view the table, start by adding a new column</p>
+          <AddColumns
+            userId={userId}
+            newTable={true}
+          />
+          <MdArrowRightAlt className="text-primary -ml-3" />
+        </div>
+      </div>
+    </div>
+  );
+};
+
+export default NothingToDisplay;
+
+
+```
+The NothingToDisplay component renders a message indicating that there is nothing to display in the table because it does not have any columns. It provides an option to add a new column to the table. The component includes icons such as "TbTableOff" for illustration, along with text messages and an "AddColumns" component for adding columns. Additionally, there's a right arrow icon ("MdArrowRightAlt") for visual indication.

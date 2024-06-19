@@ -1,0 +1,120 @@
+---
+title: "Excitation System Actions"
+description: "Each function in this file manages excitation system records, including retrieval, creation, updating, and deletion, providing essential functionalities for managing data related to excitation systems."
+---
+
+In the <Highlight>src/lib/actions</Highlight> directory, You can find the <Highlight>excitationSystem.actions.ts</Highlight>
+
+## Functions
+
+```tsx:getAllExcitationSystems
+
+export const getAllExcitationSystems = async (
+  limit = 10,
+  page = 1,
+  query = "",
+  columns: IColumn[]
+): Promise<{
+  data: IExcitationSystem[];
+  status: number;
+  totalPages: number;
+  totalDocuments: number;
+  completeData: IExcitationSystem[];
+}> => {
+  try {
+    await connectToDatabase();
+    // Construct search conditions based on query and columns
+    // Perform search and pagination
+    // Return paginated excitation systems data along with metadata
+  } catch (error) {
+    throw new Error(typeof error === "string" ? error : JSON.stringify(error));
+  }
+};
+
+```
+
+This function retrieves a list of excitation systems from the database. It accepts parameters for filtering, pagination, and search. It constructs search conditions based on the provided query and columns, performs the search, paginates the results, and returns the data along with metadata such as total documents and total pages.
+
+```tsx:createExcitationSystem
+
+export const createExcitationSystem = async (req: ICreateUpdateParams, userId: string) => {
+  const { defaultFields, additionalFields } = req;
+  try {
+    await connectToDatabase();
+    // Create a new excitation system document based on the request
+    // Save the new excitation system document
+    // Record this action in the modification history
+    // Return the created excitation system data
+  } catch (error) {
+    throw new Error(typeof error === "string" ? error : JSON.stringify(error));
+  }
+};  
+
+```
+This function creates a new excitation system record in the database. It receives a request object containing default and additional fields for the new excitation system, along with the user ID performing the action. It connects to the database, creates a new excitation system document, saves it, records this action in the modification history, and finally returns the created excitation system data.
+
+```tsx:getExcitationSystemById
+
+export const getExcitationSystemById = async (id: string) => {
+  try {
+    await connectToDatabase();
+    // Find the excitation system document by its ID
+    // If found, return its details; otherwise, return "Excitation system not found"
+  } catch (error) {
+    throw new Error(typeof error === "string" ? error : JSON.stringify(error));
+  }
+};
+
+```
+
+This function retrieves details of an excitation system by its ID. It connects to the database, finds the excitation system document by its ID, and returns its details if found. If the excitation system is not found, it returns an "Excitation system not found" message.
+
+```tsx:updateExcitationSystem
+
+export const updateExcitationSystem = async (req: ICreateUpdateParams, id: string, userId: string) => {
+  const { defaultFields, additionalFields } = req;
+  try {
+    await connectToDatabase();
+    // Find the excitation system document by its ID and update its fields based on the request
+    // Record this update action in the modification history
+    // Return the updated excitation system data
+  } catch (error) {
+    throw new Error(typeof error === "string" ? error : JSON.stringify(error));
+  }
+};
+
+```
+
+This function updates an existing excitation system record in the database. It receives a request object containing fields to update, the ID of the excitation system to update, and the user ID performing the action. It connects to the database, finds the excitation system document by its ID, updates its fields, records this action in the modification history, and finally returns the updated excitation system data.
+
+```tsx:deleteExcitationSystem
+
+export const deleteExcitationSystem = async (id: string, path: string, userId: string) => {
+  try {
+    await connectToDatabase();
+    // Find the excitation system document by its ID and delete it
+    // Record this deletion action in the modification history
+    // Revalidate a specified path, possibly related to caching mechanisms
+  } catch (error) {
+    throw new Error(typeof error === "string" ? error : JSON.stringify(error));
+  }
+};
+
+```
+This function deletes an excitation system record from the database. It receives the ID of the excitation system to delete, a path, possibly related to caching mechanisms, and the user ID performing the action. It connects to the database, finds the excitation system document by its ID, deletes it, records this deletion action in the modification history, and possibly revalidates the specified path.
+
+```tsx:uploadExcitationSystemFromExcel
+
+export const uploadExcitationSystemFromExcel = async (data: any, userId: string) => {
+  try {
+    await connectToDatabase();
+    // Insert excitation system records from Excel data into the database
+    // Record this bulk insertion action in the modification history
+    // Return a success message
+  } catch (error) {
+    throw new Error(typeof error === "string" ? error : JSON.stringify(error));
+  }
+};
+
+```
+This function uploads excitation system records from an Excel file into the database. It receives data containing excitation system records and the user ID performing the action. It connects to the database, inserts the provided data into the ExcitationSystem collection, records this bulk insertion action in the modification history, and returns a success message.

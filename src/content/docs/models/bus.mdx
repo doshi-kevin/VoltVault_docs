@@ -1,0 +1,38 @@
+---
+title: "Bus Schema"
+description: "The `busSchema` defines a MongoDB schema with fields `id`, `busName`, `nominalKV`, and `additionalFields`, where `busName` and `nominalKV` are required strings, and `additionalFields` is a flexible mixed type with default empty object. Additionally, it enables change stream pre- and post-images for the collection."
+---
+
+In the <Highlight>src/content/docs/models</Highlight> directory, You can find the <Highlight>bus.mdx</Highlight>
+
+
+## Functions
+
+```tsx:busSchema
+
+const busSchema = new Schema(
+  {
+    id: {
+      type: String,
+    },
+    busName: {
+      type: String,
+      required: true,
+    },
+    nominalKV: {
+      type: String,
+      required: true,
+    },
+    additionalFields: {
+      type: Schema.Types.Mixed,
+      default: {},
+    },
+  },
+  {
+    collectionOptions: { changeStreamPreAndPostImages: { enabled: true } },
+  }
+);
+
+```
+
+The busSchema outlines the structure for documents in a MongoDB collection, likely storing data about buses. It mandates fields like id, busName, and nominalKV (representing unique ID, bus name, and kVA rating respectively). The schema allows for additional flexible fields (additionalFields) and enables change stream pre and post images for real-time data tracking.

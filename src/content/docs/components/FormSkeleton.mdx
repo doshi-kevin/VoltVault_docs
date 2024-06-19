@@ -1,0 +1,36 @@
+---
+title: "Form Skeleton"
+description: "The `FormSkeleton` component renders a skeleton loader for a form layout, providing visual placeholders for form fields and buttons during data loading. It includes a grid layout with skeleton elements mimicking the appearance of form inputs and buttons."
+---
+
+In the <Highlight>src/content/docs/component</Highlight> directory, You can find the <Highlight>FormSkeleton.mdx</Highlight>
+
+## Functions
+
+```tsx:FormSkeleton
+const FormSkeleton = () => {
+  return (
+    <div className="flex flex-col gap-5 justify-between h-[90vh] pr-5">
+      <div className="grid grid-cols-2 gap-5">
+        {[...Array(8)].map((_, index) => (
+          <div
+            key={index}
+            className="flex flex-col gap-2"
+          >
+            <Skeleton className="w-40 h-8" />
+            <Skeleton className="w-full h-12" />
+          </div>
+        ))}
+      </div>
+      <div className="flex gap-5 py-3 w-full">
+        <Skeleton className="w-1/3 h-10" />
+        <Skeleton className="w-1/3 h-10" />
+      </div>
+    </div>
+  );
+};
+
+export default FormSkeleton;
+
+```
+The FormSkeleton component renders a skeleton loading UI for forms. It consists of a container with two sections: one for the form fields and another for the form actions. The form fields section contains placeholders for eight fields, each with a short and a longer placeholder represented by Skeleton components. The form actions section contains placeholders for two buttons. This skeleton UI gives users a visual indication of form structure and loading progress.

@@ -1,0 +1,143 @@
+---
+title: "Delete Confirmation"
+description: "The `DeleteConfirmation` component provides a confirmation dialog for deleting various types of records, executing the appropriate deletion function based on the `type` prop and displaying a success message upon completion. It utilizes React hooks for state management and transitions, and provides user feedback during the deletion process."
+---
+
+In the <Highlight>src/content/docs/component</Highlight> directory, You can find the <Highlight>DeleteConfirmation.mdx</Highlight>
+
+## Functions
+
+```tsx:DeleteConfirmation
+
+type DeleteConfirmationProps = {
+  id: string;
+  type:
+    | "Excitation System"
+    | "Bus"
+    | "Generator"
+    | "Load"
+    | "Series Capacitor"
+    | "Shunt Capacitor"
+    | "Shunt Reactor"
+    | "Single Line Diagram"
+    | "Transformers Three Winding"
+    | "Transformers Two Winding"
+    | "Transmission Line"
+    | "Turbine Governor"
+    | "IBR"
+    | "LCC-HVDC Link"
+    | "VSC-HVDC Link"
+    | "Series Fact"
+    | "Shunt Fact";
+  userId: string;
+};
+
+const DeleteConfirmation = ({ id, type, userId }: DeleteConfirmationProps) => {
+  const pathname = usePathname();
+  let [isPending, startTransition] = useTransition();
+
+  return (
+    <AlertDialog>
+      <AlertDialogTrigger>
+        <div
+          title="Delete"
+          className="text-gray-500 rounded-full hover:bg-gray-200 p-2"
+        >
+          <MdDelete className="text-gray-500 text-lg" />
+        </div>
+      </AlertDialogTrigger>
+      <AlertDialogContent className="bg-white">
+        <AlertDialogHeader>
+          <AlertDialogTitle>Are you absolutely sure?</AlertDialogTitle>
+          <AlertDialogDescription>
+            This action cannot be undone. This will permanently delete this {type} from our servers.
+          </AlertDialogDescription>
+        </AlertDialogHeader>
+        <AlertDialogFooter>
+          <AlertDialogCancel>Cancel</AlertDialogCancel>
+          <AlertDialogAction
+            className="bg-red-500 hover:bg-red-700"
+            onClick={() =>
+              startTransition(async () => {
+                switch (type) {
+                  case "Bus":
+                    await deleteBus(id, pathname, userId);
+                    break;
+                  case "Excitation System":
+                    await deleteExcitationSystem(id, pathname, userId);
+                    break;
+
+                  case "Generator":
+                    await deleteGenerator(id, pathname, userId);
+                    break;
+
+                  case "Load":
+                    await deleteLoad(id, pathname, userId);
+                    break;
+
+                  case "Series Capacitor":
+                    await deleteSeriesCapacitor(id, pathname, userId);
+                    break;
+
+                  case "Shunt Capacitor":
+                    await deleteShuntCapacitor(id, pathname, userId);
+                    break;
+
+                  case "Shunt Reactor":
+                    await deleteShuntReactor(id, pathname, userId);
+                    break;
+
+                  case "Single Line Diagram":
+                    await deleteSingleLineDiagram(id, pathname, userId);
+                    break;
+
+                  case "Transformers Three Winding":
+                    await deleteTransformersThreeWinding(id, pathname, userId);
+                    break;
+
+                  case "Transformers Two Winding":
+                    await deleteTransformersTwoWinding(id, pathname, userId);
+                    break;
+
+                  case "Transmission Line":
+                    await deleteTransmissionLine(id, pathname, userId);
+                    break;
+
+                  case "Turbine Governor":
+                    await deleteTurbineGovernor(id, pathname, userId);
+                    break;
+
+                  case "IBR":
+                    await deleteIBR(id, pathname, userId);
+
+                  case "LCC-HVDC Link":
+                    await deleteLCCHVDCLink(id, pathname, userId);
+
+                  case "Series Fact":
+                    await deleteSeriesFact(id, pathname, userId);
+
+                  case "Shunt Fact":
+                    await deleteShuntFact(id, pathname, userId);
+
+                  case "VSC-HVDC Link":
+                    await deleteVSCHVDCLink(id, pathname, userId);
+
+                  default:
+                    break;
+                }
+                toast.success("Record deleted successfully");
+              })
+            }
+          >
+            {isPending ? "Deleting..." : "Delete"}
+          </AlertDialogAction>
+        </AlertDialogFooter>
+      </AlertDialogContent>
+    </AlertDialog>
+  );
+};
+
+export default DeleteConfirmation;
+
+```
+This code defines a DeleteConfirmation component that provides a confirmation dialog for deleting various types of records from the server. It uses the AlertDialog component from a UI library to prompt the user for confirmation and performs the deletion based on the specified record type.

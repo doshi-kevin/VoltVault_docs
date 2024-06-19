@@ -1,0 +1,114 @@
+---
+title: "lccHVDClink Actions"
+description: "This file contains functions for CRUD operations (Create, Read, Update, Delete) and Excel data upload for the llcHVDClink database collection, along with modification history tracking and caching mechanisms."
+---
+
+In the <Highlight>src/lib/actions</Highlight> directory, You can find the <Highlight>lccHVDClink.actions.ts</Highlight>
+
+## Functions
+
+```tsx:getAllLCCHVDCLinks
+
+export const getAllLCCHVDCLinks = async (
+  limit = 10,
+  page = 1,
+  query = "",
+  columns: IColumn[]
+) => {
+  // ... code to connect to database
+  const conditions = { /* ... conditions based on query */ };
+  const skipAmount = (Number(page) - 1) * limit;
+  const lccHcdvLink = await LCCHVDCLink.find(query ? conditions : {})
+    .skip(skipAmount)
+    .limit(limit);
+  // ... code to process and return data
+};
+
+
+
+```
+This function fetches all LCC-HVDC links from the database. It accepts optional parameters for pagination, search query, and columns to be retrieved.
+
+```tsx:createLCCHVDCLink
+
+export const createLCCHVDCLink = async (req: ICreateUpdateParams, userId: string) => {
+  // ... code to connect to database
+  const newLCCHVDCLink = new LCCHVDCLink({
+    ...defaultFields,
+    additionalFields,
+  });
+  await newLCCHVDCLink.save();
+
+  // ... code to create modification history entry
+
+  return { data: JSON.parse(JSON.stringify(createLCCHVDCLinkWithId)), status: 200 };
+};
+
+
+
+```
+This function creates a new LCC-HVDC link in the database. It accepts an object containing default and additional fields for the link. The function also creates a modification history entry to track changes.
+
+```tsx:getLCCHVDCLinkById
+
+export const getLCCHVDCLinkById = async (id: string) => {
+  // ... code to connect to database
+  const vscHcdvLinkDetails = await LCCHVDCLink.findById(id);
+  if (!vscHcdvLinkDetails) return { data: "LCC-HVDC Link not found", status: 404 };
+  return { data: JSON.parse(JSON.stringify(vscHcdvLinkDetails)), status: 200 };
+};
+
+
+
+```
+This function fetches a specific LCC-HVDC link by its ID from the database.
+
+```tsx:updateLCCHVDCLink
+
+export const updateLCCHVDCLink = async (req: ICreateUpdateParams, id: string, userId: string) => {
+  // ... code to connect to database
+  const response = await LCCHVDCLink.findByIdAndUpdate(id, {
+    ...defaultFields,
+    additionalFields,
+  });
+
+  // ... code to generate modification history message based on changes
+
+  await ModificationHistory.create(modificationHistory);
+
+  return { data: JSON.parse(JSON.stringify(response)), status: 200 };
+};
+
+
+```
+
+This function updates an existing LCC-HVDC link in the database. It accepts the updated data, ID, and user ID for tracking changes. The function also creates a modification history entry to record the specific fields that were modified
+
+```tsx:deleteLCCHVDCLink
+
+export const deleteLCCHVDCLink = async (id: string, path: string, userId: string) => {
+  // ... code to connect to database
+  const response = await LCCHVDCLink.findByIdAndDelete(id);
+  if (response) {
+    // ... code to create modification history entry
+    revalidatePath(path); // This likely triggers a data invalidation process
+  }
+};
+
+```
+This function deletes an LCC-HVDC link from the database by its ID. It also creates a modification history entry to track the deletion.
+
+```tsx:uploadLCCHVDCLinkFromExcel
+
+export const uploadLCCHVDCLinkFromExcel = async (data: any, userId: string) => {
+  // ... code to connect to database
+  const response = await LCCHVDCLink.insertMany(data);
+  if (response) {
+    // ... code to create modification history entry
+    return { data: `${
+
+
+
+
+```
+This function uploads LCC-HVDC link data from an Excel file into the database. It creates multiple entries at once and creates a modification history entry to track the bulk upload

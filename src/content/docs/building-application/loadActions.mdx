@@ -1,0 +1,103 @@
+---
+title: "Load Actions"
+description: "This file provides functions to interact with a database for managing load records, including fetching, creating, updating, and deleting records, as well as uploading records from Excel files, with logging of operations for modification history."
+---
+
+In the <Highlight>src/lib/actions</Highlight> directory, You can find the <Highlight>load.actions.ts</Highlight>
+
+## Functions
+
+```tsx:getAllLoads
+
+export const getAllLoads = async (
+  limit = 10,
+  page = 1,
+  query = "",
+  columns
+) => {
+  try {
+    await connectToDatabase();
+    // Implementation code to retrieve loads based on parameters
+  } catch (error) {
+    throw new Error(typeof error === "string" ? error : JSON.stringify(error));
+  }
+};
+
+```
+The getAllLoads function retrieves a list of loads from the database based on specified parameters such as the limit of results per page, the page number, a search query, and columns to search in. It connects to the database, constructs search conditions based on the query and columns provided, fetches loads accordingly, and returns the result along with metadata like total documents and total pages.
+
+```tsx:createLoad 
+
+export const createLoad = async (req, userId) => {
+  try {
+    await connectToDatabase();
+    // Implementation code to create a new load record
+  } catch (error) {
+    throw new Error(typeof error === "string" ? error : JSON.stringify(error));
+  }
+};
+ 
+
+```
+The createLoad function adds a new load record to the database. It receives the request body (req) containing the data for the new load record and the userId of the user performing the operation. After connecting to the database, it creates a new load record using the provided data and returns the newly created record.
+
+```tsx:getLoadById
+
+export const getLoadById = async (id) => {
+  try {
+    await connectToDatabase();
+    // Implementation code to retrieve load details by ID
+  } catch (error) {
+    throw new Error(typeof error === "string" ? error : JSON.stringify(error));
+  }
+};
+
+
+```
+The getLoadById function fetches details of a specific load record from the database based on the provided ID. It connects to the database, queries for the load record with the given ID, and returns the details if found, otherwise returns a 404 error.
+
+```tsx:updateLoad 
+
+export const updateLoad = async (req, id, userId) => {
+  try {
+    await connectToDatabase();
+    // Implementation code to update an existing load record
+  } catch (error) {
+    throw new Error(typeof error === "string" ? error : JSON.stringify(error));
+  }
+};
+
+
+
+```
+
+The updateLoad function updates an existing load record in the database with new data. It receives the request body (req) containing the updated data, the id of the load record to be updated, and the userId of the user performing the operation. After connecting to the database, it updates the specified load record with the new data and returns the updated record
+
+```tsx:deleteLoad
+
+export const deleteLoad = async (id, path, userId) => {
+  try {
+    await connectToDatabase();
+    // Implementation code to delete a load record
+  } catch (error) {
+    throw new Error(typeof error === "string" ? error : JSON.stringify(error));
+  }
+};
+
+
+```
+The deleteLoad function removes a load record from the database based on the provided ID. It connects to the database, deletes the load record with the given ID, and logs the deletion in the modification history. If the deletion is successful, it also triggers a revalidation of the specified path.
+
+```tsx:uploadGeneratorFromExcel
+
+export const uploadLoadFromExcel = async (data, userId) => {
+  try {
+    await connectToDatabase();
+    // Implementation code to insert load records from Excel
+  } catch (error) {
+    throw new Error(typeof error === "string" ? error : JSON.stringify(error));
+  }
+};
+
+```
+The uploadLoadFromExcel function inserts multiple load records into the database from an Excel file. It receives the data containing load records extracted from the Excel file and the userId of the user performing the operation. After connecting to the database, it inserts the load records from the provided data and logs the operation in the modification history.

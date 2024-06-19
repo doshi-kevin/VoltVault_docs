@@ -1,0 +1,43 @@
+---
+title: "Shunt Capacitor Schema"
+description: "This script defines a Mongoose schema for shunt capacitors, capturing device details, electrical specifications, and supporting custom fields. It enables real-time change stream monitoring and exports the ShuntCapacitor model for CRUD operations on MongoDB."
+---
+
+
+In the <Highlight>src/content/docs/models</Highlight> directory, You can find the <Highlight>ShuntCapacitor.mdx</Highlight>
+
+## Functions
+
+```tsx:shuntCapacitorSchema
+
+const shuntCapacitorSchema = new Schema(
+  {
+    id: {
+      type: String,
+    },
+    deviceName: {
+      type: String,
+    },
+    busFrom: {
+      type: String,
+    },
+    busSectionFrom: {
+      type: String,
+    },
+    kv: {
+      type: String,
+    },
+    mva: {
+      type: String,
+    },
+    additionalFields: {
+      type: Schema.Types.Mixed,
+      default: {},
+    },
+  },
+  {
+    collectionOptions: { changeStreamPreAndPostImages: { enabled: true } },
+  }
+);
+```
+This script defines a Mongoose schema for representing shunt capacitors in a database. It includes fields for device name, bus connection details, and electrical specifications like voltage and apparent power. The schema allows for additional custom fields and enables change stream monitoring for real-time updates. The exported model, ShuntCapacitor, facilitates CRUD operations on the MongoDB collection containing shunt capacitor data.

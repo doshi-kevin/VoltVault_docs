@@ -1,0 +1,41 @@
+---
+title: "TurbineGovernor Schema"
+description: "This script defines a Mongoose schema for turbine governors, vital in power generation systems. It includes fields like ID, deviceName, turbineType, generatorDeviceName, turbineModelImage, and additionalFields for custom data. Configured for real-time change stream monitoring, the TurbineGovernor model supports CRUD operations on MongoDB for managing turbine governor data."
+---
+
+
+In the <Highlight>src/content/docs/models</Highlight> directory, You can find the <Highlight>TurbineGovernor.mdx</Highlight>
+
+## Functions
+
+```tsx:turbineGovernorSchema
+
+const turbineGovernorSchema = new Schema(
+  {
+    id: {
+      type: String,
+    },
+    deviceName: {
+      type: String,
+    },
+    turbineType: {
+      type: String,
+    },
+    generatorDeviceName: {
+      type: String,
+    },
+    turbineModelImage: {
+      type: String,
+    },
+    additionalFields: {
+      type: Schema.Types.Mixed,
+      default: {},
+    },
+  },
+  {
+    collectionOptions: { changeStreamPreAndPostImages: { enabled: true } },
+  }
+);
+
+```
+This script creates a Mongoose schema to represent turbine governors, typically used in power generation systems. The schema includes fields such as ID, deviceName, turbineType, generatorDeviceName, turbineModelImage, and additionalFields for custom data. It's configured to allow change stream monitoring for real-time updates. The exported model, TurbineGovernor, facilitates interaction with the MongoDB collection, enabling CRUD operations on turbine governor data.

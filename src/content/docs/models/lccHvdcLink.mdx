@@ -1,0 +1,31 @@
+---
+title: "lccHVDCLink Schema"
+description: "This code defines `lccHvdcLinkSchema`, a Mongoose schema for an LCC HVDC link with an ID field and customizable attributes stored as mixed data types. It supports real-time change stream monitoring and exports the model `LCCHVDCLink` for robust database interactions, ensuring consistent data management."
+---
+
+
+In the <Highlight>src/content/docs/models</Highlight> directory, You can find the <Highlight>lccHVDCLink.mdx</Highlight>
+
+## Functions
+
+```tsx:lccHvdcLinkSchema
+
+const lccHvdcLinkSchema = new Schema(
+  {
+    id: {
+      type: String,
+    },
+    additionalFields: {
+      type: Schema.Types.Mixed,
+      default: {},
+    },
+  },
+  {
+    collectionOptions: { changeStreamPreAndPostImages: { enabled: true } },
+  }
+);
+
+
+```
+
+This code defines a Mongoose schema for an LCC HVDC (Line-Commutated Converter High Voltage Direct Current) link, specifying an ID field and additional customizable fields stored as mixed data types. It enables real-time change stream monitoring for the collection and exports the model LCCHVDCLink for database interactions, facilitating consistent data management.

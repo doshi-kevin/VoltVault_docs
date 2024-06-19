@@ -1,0 +1,87 @@
+---
+title: "Login Request Actions"
+description: "This file contains functions to manage login requests, including retrieval, creation, status update, and deletion, facilitating user access control in the system."
+---
+
+In the <Highlight>src/lib/actions</Highlight> directory, You can find the <Highlight>loginRequest.actions.ts</Highlight>
+
+## Functions
+
+```tsx:getAllLoginRequests
+
+export const getAllLoginRequests = async ({
+  query,
+  status,
+  limit = 10,
+  page = 1,
+}: {
+  query: string;
+  status: string;
+  limit: number;
+  page: number;
+}): Promise<{ data: ILoginRequest[]; status: number; totalPages: number; totalDocuments: number }> => {
+  try {
+    await connectToDatabase();
+    // Construct search conditions based on query and status
+    // Perform search and pagination
+    // Return paginated login requests data along with metadata
+  } catch (error) {
+    throw new Error(typeof error === "string" ? error : JSON.stringify(error));
+  }
+};
+
+```
+
+This function retrieves a list of login requests from the database. It accepts parameters for filtering, pagination, and search. It constructs search conditions based on the provided query and status, performs the search, paginates the results, and returns the data along with metadata such as total documents and total pages.
+
+```tsx:createLoginRequest
+
+export const createLoginRequest = async (data: any) => {
+  try {
+    await connectToDatabase();
+    // Check if user or request already exists
+    // Create a new login request
+    // Return appropriate messages based on the outcome
+  } catch (error) {
+    throw new Error(typeof error === "string" ? error : JSON.stringify(error));
+  }
+};
+
+```
+This function creates a new login request in the database. It checks if a user or request already exists, creates a new login request if not, and returns appropriate messages indicating success or failure.
+
+```tsx:updateLoginRequestStatus
+
+export const updateLoginRequestStatus = async (status: string, id: string) => {
+  try {
+    await connectToDatabase();
+    // If status is 'Rejected', update the request status
+    // If status is other than 'Rejected', 
+    //approve the request, delete the request from login requests, 
+    //create a new user, and send an email notification
+    // Return appropriate messages based on the action performed
+  } catch (error) {
+    throw new Error(typeof error === "string" ? error : JSON.stringify(error));
+  }
+};
+
+```
+
+This function updates the status of a login request in the database. If the status is 'Rejected', it updates the request status. If the status is other than 'Rejected', it approves the request, deletes the request from login requests, creates a new user, sends an email notification, and returns appropriate messages based on the action performed.
+
+```tsx:deleteLoginRequest
+
+export const deleteLoginRequest = async (id: string) => {
+  try {
+    await connectToDatabase();
+    // Find and delete the login request by ID
+    // Return a message indicating successful deletion
+  } catch (error) {
+    throw new Error(typeof error === "string" ? error : JSON.stringify(error));
+  }
+};
+
+```
+
+This function deletes a login request from the database based on the provided ID. It finds and deletes the login request by ID and returns a message indicating successful deletion.
+

@@ -1,0 +1,109 @@
+---
+title: "TransmissionLines Actions"
+description: "
+This file contains functions to interact with a database for managing TransmissionLiness. It provides functionalities such as retrieving TransmissionLiness with pagination and search, creating, updating, and deleting individual TransmissionLiness, as well as uploading data from Excel files. Additionally, it maintains a modification history for tracking changes made to TransmissionLiness."
+---
+
+In the <Highlight>src/lib/actions</Highlight> directory, You can find the <Highlight>TransmissionLines.actions.ts</Highlight>
+
+## Functions
+
+```tsx:getAllTransmissionLiness
+
+export const getAllTransmissionLiness = async (
+  limit = 10,
+  page = 1,
+  query = "",
+  columns: IColumn[]
+): Promise<{
+  data: ITransmissionLines[];
+  status: number;
+  totalPages: number;
+  totalDocuments: number;
+  completeData: ITransmissionLines[];
+}> => {
+  try {
+    await connectToDatabase();
+    // Implementation code to retrieve TransmissionLiness based on parameters
+  } catch (error) {
+    throw new Error(typeof error === "string" ? error : JSON.stringify(error));
+  }
+};
+
+```
+This function retrieves TransmissionLiness from the database based on specified criteria such as pagination, search query, and columns to display. It returns paginated results along with total counts and complete data matching the query.
+
+```tsx:createTransmissionLines
+
+export const createTransmissionLines = async (req: ICreateUpdateParams, userId: string) => {
+  const { defaultFields, additionalFields } = req;
+  try {
+    await connectToDatabase();
+    // Implementation code to create a new TransmissionLines
+  } catch (error) {
+    throw new Error(typeof error === "string" ? error : JSON.stringify(error));
+  }
+};
+ 
+
+```
+This function creates a new TransmissionLines in the database using the provided parameters, including default and additional fields. It logs the creation of the new record in the modification history and returns the newly created TransmissionLines.
+
+```tsx:getTransmissionLinesById
+
+export const getTransmissionLinesById = async (id: string) => {
+  try {
+    await connectToDatabase();
+    // Implementation code to retrieve a TransmissionLines by its ID
+  } catch (error) {
+    throw new Error(typeof error === "string" ? error : JSON.stringify(error));
+  }
+};
+
+
+```
+This function fetches a specific TransmissionLines from the database by its unique ID. If the TransmissionLines exists, it returns its details; otherwise, it returns a "not found" message.
+
+```tsx:updateTransmissionLines
+
+export const updateTransmissionLines = async (req: ICreateUpdateParams, id: string, userId: string) => {
+  const { defaultFields, additionalFields } = req;
+  try {
+    await connectToDatabase();
+    // Implementation code to update a TransmissionLines
+  } catch (error) {
+    throw new Error(typeof error === "string" ? error : JSON.stringify(error));
+  }
+};
+
+```
+
+This function updates an existing TransmissionLines in the database based on the provided parameters. It logs the changes made to the TransmissionLines in the modification history and returns the updated TransmissionLines.
+
+```tsx:deleteTransmissionLines
+
+export const deleteTransmissionLines = async (id: string, path: string, userId: string) => {
+  try {
+    await connectToDatabase();
+    // Implementation code to delete a TransmissionLines
+  } catch (error) {
+    throw new Error(typeof error === "string" ? error : JSON.stringify(error));
+  }
+};
+
+```
+This function deletes a TransmissionLines from the database by its ID. It also logs the deletion in the modification history and revalidates the specified path, presumably for cache invalidation.
+
+```tsx:uploadTransmissionLinesFromExcel
+
+export const uploadTransmissionLinesFromExcel = async (data: any, userId: string) => {
+  try {
+    await connectToDatabase();
+    // Implementation code to upload TransmissionLiness from an Excel file
+  } catch (error) {
+    throw new Error(typeof error === "string" ? error : JSON.stringify(error));
+  }
+};
+
+```
+This function uploads TransmissionLiness from an Excel file into the database. It inserts the data from the file into the TransmissionLines collection and logs the upload in the modification history.

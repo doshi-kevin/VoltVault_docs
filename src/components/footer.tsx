@@ -23,7 +23,7 @@ export default function Footer() {
           .The source code is available on{" "}
           <Link
             className="font-semibold underline underline-offset-2"
-            href={process.env.GITHUB_PROJECT_URL ?? "https://github.com/doshi-kevin/IITB-docs/tree/models_components"}
+            href={process.env.GITHUB_PROJECT_URL ?? "https://github.com/doshi-kevin/VoltVault_docs"}
           >
             GitHub
           </Link>

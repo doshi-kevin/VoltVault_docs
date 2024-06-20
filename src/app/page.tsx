@@ -9,7 +9,7 @@ export default function Home() {
         What is in VoltVault? All the tools you need to map a Power System Efficiently.
       </p>
       <h1 className="text-5xl font-bold mb-8 sm:text-7xl">
-        The Moderm Power System Database 
+        The Modern Power System Database 
       </h1>
       <p className="mb-8 text-xl ">
       Database for efficient Power System data management!
